@@ -54,30 +54,7 @@ function nextbox(e, id) {
                     <h3 class="panel-title"><img src='images/phonebook.ico' width='25'> <font color='brown'>เขียนขอใช้ห้องประชุม</font></h3>
                     </div>
                 <div class="panel-body">
-                    <div align='center'>
-                                <h4>แบบฟอร์มการขอใช้ห้องประชุม/อุปกรณ์โสตฯ<p>
-                            บริหารงานทั่วไป <?= $resultHos['name']?>
-                                    </p></h4>
-                                    <?php if($_SESSION['ss_status']=='USER'){ ?>
-                                    ข้าพเจ้า <b><?php if($_REQUEST['method']=='edit') { echo $edit_person['fullname'];}else{ echo $_SESSION['ssfullname'];}?></b> 
-                                    ฝ่าย/งาน/กลุ่มงาน <b><?php if($_REQUEST['method']=='edit') { echo $edit_person['depName'];}else{ echo $resultDep['depName'];}?></b><p> มีความประสงค์ที่จะขอใช้ห้องประชุมและอุปกรณ์โสตฯ
-                                    
-                    </div><?php }else{?>
-                </div>
-                    <div class="form-group">
-                        <label for="empno">ผู้ขอ</label>
-                        <select name="empno" id="empno" required  class="form-control select2" style="width: 100%" onkeydown="return nextbox(event, 'dep');"> 
-				<?php	$sql = mysqli_query($db,"SELECT concat(firstname,' ',lastname) as fullname, empno  FROM emppersonal 
-                                            order by empno");
-				 echo "<option value=''> --เลือกผู้ขอใช้ห้องประชุม-- </option>";
-				 while( $result = mysqli_fetch_assoc( $sql ) ){
-          if($result['empno']==$edit_person['empno_request']){$selected='selected';}else{$selected='';}
-				 echo "<option value='".$result['empno']."' $selected>".$result['fullname'] ."</option>";
-				 } ?>
-			 </select> 
-                    </div>
-                  <div class="form-group" > 
-                      <?php 
+                    <?php 
  		if(!empty($method)){
  			$take_date= $edit_person['record_date'];
                         $take_date1 = $edit_person['start_date'];
@@ -95,6 +72,29 @@ function nextbox(e, id) {
                 $( "#datepicker2" ).datepicker("setDate", new Date('<?=$take_date2?>')); //Set ค่าวัน
                  });
                 </script>
+                    <div align='center'>
+                                <h4>แบบฟอร์มการขอใช้ห้องประชุม/อุปกรณ์โสตฯ<p>
+                            บริหารงานทั่วไป <?= $resultHos['name']?>
+                                    </p></h4>
+                                    <?php if($_SESSION['ss_status']=='USER'){ ?>
+                                    ข้าพเจ้า <b><?php if($method=='edit') { echo $edit_person['fullname'];}else{ echo $_SESSION['ssfullname'];}?></b> 
+                                    ฝ่าย/งาน/กลุ่มงาน <b><?php if($method=='edit') { echo $edit_person['depName'];}else{ echo $resultDep['depName'];}?></b><p> มีความประสงค์ที่จะขอใช้ห้องประชุมและอุปกรณ์โสตฯ
+                                    
+                    </div><?php }else{?>
+                </div>
+                    <div class="form-group">
+                        <label for="empno">ผู้ขอ</label>
+                        <select name="empno" id="empno" required  class="form-control select2" style="width: 100%" onkeydown="return nextbox(event, 'dep');"> 
+				<?php	$sql = mysqli_query($db,"SELECT concat(firstname,' ',lastname) as fullname, empno  FROM emppersonal 
+                                            order by empno");
+				 echo "<option value=''> --เลือกผู้ขอใช้ห้องประชุม-- </option>";
+				 while( $result = mysqli_fetch_assoc( $sql ) ){
+          if($result['empno']==$edit_person['empno_request']){$selected='selected';}else{$selected='';}
+				 echo "<option value='".$result['empno']."' $selected>".$result['fullname'] ."</option>";
+				 } ?>
+			 </select> 
+                    </div>
+                  <div class="form-group" > 
                         <label for="obj">วันที่ขอ &nbsp;</label>
                         <input value="" type="text" NAME="record_date" id="datepicker"  placeholder='รูปแบบ 2016-01-31' class="form-control" onkeydown="return nextbox(event, 'start_date')" placeholder="" required>
                     </div>
