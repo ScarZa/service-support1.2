@@ -120,7 +120,7 @@ $car_no="$Y/$Ln";
         $Event2=  mysqli_fetch_assoc($event2);
         $Events=$Event2['url'];
           $update_event=mysqli_query($db,"update tbl_event set event_start='$start_date $start_time',event_end='$end_date $end_time', event_url='$Events/service&support/car/confirm_car.php?id=$car_id&method=back',event_allDay='false',
-            workid='$car_id',process='3' where workid='$car_id'");  
+            workid='$car_id where workid='$car_id' and process='3'");  
     }
 
     if ($edit == false) {
