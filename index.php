@@ -45,9 +45,6 @@ if (isset($_SESSION['ss_id'])) {
                         <?php
                         include_once ('option/funcDateThai.php');
                         include 'option/function_date.php';
-                        $d_start = 01;
-                        $m_start = 01;
-                        $d = date("d");
                         if (empty($_POST['year'])) {
                             
                             if($date >= $bdate and $date <= $edate){

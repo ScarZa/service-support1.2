@@ -19,7 +19,7 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <meta name="description" content="">
         <meta name="author" content="">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
@@ -107,8 +107,8 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                 var pmeters = 'mySort=' + Sort;
                 HttPRequest.open('POST', url, true);
                 HttPRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                HttPRequest.setRequestHeader("Content-length", pmeters.length);
-                HttPRequest.setRequestHeader("Connection", "close");
+                //HttPRequest.setRequestHeader("Content-length", pmeters.length);
+               // HttPRequest.setRequestHeader("Connection", "close");
                 HttPRequest.send(pmeters);
                 HttPRequest.onreadystatechange = function ()
                 {
