@@ -1,7 +1,7 @@
 <?php @session_start(); ?>
 <?php include '../connection/connect.php';?>
 <?php 
-$method = isset($_REQUEST['method'])?$_REQUEST['method']:'';
+$method = isset($_POST['method'])?$_POST['method']:isset($_GET['method'])?$_GET['method']:'';
 if($method!='back'){
  if(empty($_SESSION['ss_id'])){echo "<meta http-equiv='refresh' content='0;url=index.php'/>";exit();}   
 }
