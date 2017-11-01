@@ -56,10 +56,11 @@ if($method!='back'){
                             $select_det=  mysqli_query($db,"SELECT ssc . * , CONCAT( p1.pname, e1.firstname,  ' ', e1.lastname ) AS fullname, d1.depName AS dep, e1.empno AS empno, r.room_name
 FROM ss_conferance ssc
 INNER JOIN emppersonal e1 ON e1.empno = ssc.empno_request
+inner JOIN work_history wh ON wh.empno=e1.empno
 INNER JOIN pcode p1 ON e1.pcode = p1.pcode
-INNER JOIN department d1 ON e1.depid = d1.depId
+INNER JOIN department d1 ON wh.depid = d1.depId
 INNER JOIN ss_room r ON r.room_id = ssc.room
-WHERE ssc.conf_id ='$conf_id'");
+WHERE ssc.conf_id ='$conf_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
                             $detial_l= mysqli_fetch_assoc($select_det);
                             $idAdmin= isset($detial_l['idAdmin'])?$detial_l['idAdmin']:'';
                             $select_admin=mysqli_query($db,"select concat(e.firstname,' ',e.lastname) as adminname

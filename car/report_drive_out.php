@@ -127,8 +127,9 @@
     $q="SELECT d.depName,COUNT(ssc.car_id) AS time,SUM(ssc.distance)AS dist
 FROM ss_car ssc
 LEFT OUTER JOIN emppersonal emp ON emp.empno=ssc.empno_request
-INNER JOIN department d ON d.depId=emp.depid
-WHERE (ssc.start_date between '$take_month1' and '$take_month2') $code_license_id
+inner JOIN work_history wh ON wh.empno=emp.empno
+INNER JOIN department d ON d.depId = wh.depid
+WHERE (ssc.start_date between '$take_month1' and '$take_month2') $code_license_id and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 GROUP BY d.depId ORDER BY dist DESC";
     $qr = mysqli_query($db,$q);
        }         ?>

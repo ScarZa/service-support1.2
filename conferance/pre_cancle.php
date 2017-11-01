@@ -30,16 +30,18 @@ if($date >= $bdate and $date <= $edate){
             from ss_conferance ssc
             inner join ss_room r on r.room_id=ssc.room
             inner join emppersonal e on e.empno=ssc.empno_request
-            inner join department d on d.depId=e.depid
-            WHERE approve='N' and start_date between '$this_year-10-01' and '$next_year-09-30'
+            inner JOIN work_history wh ON wh.empno=e.empno
+            INNER JOIN department d ON d.depId = wh.depid
+            WHERE approve='N' and start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) 
             order by ssc.conf_id";
     $qr = mysqli_query($db,$q);
     $q2="select r.room_name, d.depName, ssc.start_date, ssc.end_date, ssc.start_time, ssc.end_time, ssc.amount, ssc.conf_id, ssc.conferance_no
             from ss_conferance ssc
             inner join ss_room r on r.room_id=ssc.room
             inner join emppersonal e on e.empno=ssc.empno_request
-            inner join department d on d.depId=e.depid
-            WHERE approve='C' and start_date between '$this_year-10-01' and '$next_year-09-30'
+            inner JOIN work_history wh ON wh.empno=e.empno
+            INNER JOIN department d ON d.depId = wh.depid
+            WHERE approve='C' and start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) 
             order by ssc.conf_id";
     $qr2 = mysqli_query($db,$q2);
 

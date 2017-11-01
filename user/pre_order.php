@@ -81,7 +81,7 @@
                 } }
 if($_SESSION['ss_status']=='USER'){ 
   $dep=$_SESSION['ss_dep'];  
-  $code="e.depid='$dep' and";  
+  $code="wh.depid='$dep' and";  
 }  else {
   $code="";  
 }
@@ -89,8 +89,9 @@ if($_SESSION['ss_status']=='USER'){
             from ss_conferance ssc
             inner join ss_room r on r.room_id=ssc.room
             inner join emppersonal e on e.empno=ssc.empno_request
-            inner join department d on d.depId=e.depid
-            where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30'
+            inner JOIN work_history wh ON wh.empno=e.empno
+            inner join department d on d.depId=wh.depid
+            where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
             order by ssc.conf_id desc";
     
     $q2="SELECT ssc . * , CONCAT( p1.pname, e.firstname,  ' ', e.lastname ) AS fullname, d1.depName AS dep, e.empno AS empno,

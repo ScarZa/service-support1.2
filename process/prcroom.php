@@ -167,7 +167,7 @@ $conferance_no="$Y/$Ln";
         $Event2=  mysqli_fetch_assoc($event2);
         $Events=$Event2['url'];
     $insert_event=mysqli_query($db,"insert into tbl_event set event_title='$depName',event_start='$event_start',event_end='$event_end',event_allDay='false',
-            empno='$empno',workid='$conf_id',typela='$room',process='2', event_url='$Events/service&support/conferance/confirm_conf.php?id=$conf_id&method=back'");
+            empno='$empno',workid='$conf_id',typela='$room',process='2', event_url='$Events/service&support1.2/conferance/confirm_conf.php?id=$conf_id&method=back'");
     }
     if ($confirm_conf == false) {
         echo "<p>";

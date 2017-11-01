@@ -14,9 +14,10 @@ $sql = mysqli_query($db,"select count(conf_id) AS countconf from ss_conferance W
                                             $sql2 = mysqli_query($db,"SELECT d.depName, ssc.conf_id, LEFT( ssc.obj, 20 ) AS detail, r.room_name, ssc.start_date, ssc.start_time
                                                                         FROM ss_conferance ssc
                                                                         INNER JOIN emppersonal e ON e.empno = ssc.empno_request
-                                                                        INNER JOIN department d ON d.depId = e.depid
+                                                                        inner JOIN work_history wh ON wh.empno=e.empno
+                                                                        INNER JOIN department d ON d.depId = wh.depid
                                                                         INNER JOIN ss_room r ON r.room_id = ssc.room
-                                                                        WHERE ISNULL( approve ) 
+                                                                        WHERE ISNULL( approve ) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) 
                                                                         ORDER BY ssc.conf_id desc");
                                             while ($result2 = mysqli_fetch_assoc($sql2)) {
                                                 ?>
@@ -50,8 +51,9 @@ $sql = mysqli_query($db,"select count(car_id) AS countcar from ss_car WHERE isnu
                                             $sql2 = mysqli_query($db,"SELECT ssc.place, ssc.car_id, LEFT( ssc.obj, 20 ) AS detail, concat(e.firstname,' ',e.lastname) as fullname, ssc.start_date, ssc.start_time
                                                                         FROM ss_car ssc
                                                                         INNER JOIN emppersonal e ON e.empno = ssc.empno_request
-                                                                        INNER JOIN department d ON d.depId = e.depid
-                                                                        WHERE ISNULL( payer ) 
+                                                                        inner JOIN work_history wh ON wh.empno=e.empno
+                                                                        INNER JOIN department d ON d.depId = wh.depid
+                                                                        WHERE ISNULL( payer ) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) 
                                                                         ORDER BY ssc.car_id desc");
                                             while ($result2 = mysqli_fetch_assoc($sql2)) {
                                                 ?>

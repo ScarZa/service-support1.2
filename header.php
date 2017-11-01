@@ -140,8 +140,8 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
         <!-- Bottom Left 
         <img src="/images/black_ribbon_bottom_left.png" class="black-ribbon stick-bottom stick-left"/>-->
 
-        <!-- Bottom Right -->
-        <img src="images/black_ribbon_bottom_right.png" class="black-ribbon stick-bottom stick-right"/>
+        <!-- Bottom Right 
+        <img src="images/black_ribbon_bottom_right.png" class="black-ribbon stick-bottom stick-right"/>-->
         <div id="wrapper">
             <!-- Sidebar -->
             <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
@@ -154,7 +154,7 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="./"><font color='#fedd00'><b>Service & Support System v.1.2.0 </b></font><!--ระบบบริหารความเสี่ยง <? echo $resultHos['name']; ?>--></a>
+                    <a class="navbar-brand" href="./"><font color='#fedd00'><b>Service & Support System v.1.2.1 </b></font><!--ระบบบริหารความเสี่ยง <? echo $resultHos['name']; ?>--></a>
                 </div>
                 <?php
                 if (!empty($_SESSION['ssuser_id'])) {

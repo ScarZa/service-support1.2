@@ -36,14 +36,15 @@ include_once ('../option/funcDateThai.php');
 FROM ss_car ssc
 INNER JOIN emppersonal e1 ON ssc.empno_request = e1.empno
 INNER JOIN pcode p1 ON e1.pcode = p1.pcode
-INNER JOIN department d1 ON e1.depid = d1.depId
+inner JOIN work_history wh ON wh.empno=e1.empno
+INNER JOIN department d1 ON d1.depId = wh.depid
 INNER JOIN department_group d2 ON d2.main_dep = d1.main_dep
 INNER JOIN posid p2 ON e1.posid = p2.posId
 INNER JOIN amphur am on am.AMPHUR_ID=ssc.amphur
 INNER JOIN province pv on pv.PROVINCE_ID=ssc.province
 INNER JOIN ss_car_type c on c.cartype_id=ssc.car_type
 INNER JOIN ss_carlicense l on l.license_id=ssc.license_plate
-WHERE ssc.car_id ='".$car_id."'");
+WHERE ssc.car_id ='".$car_id."' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
     $car =  mysqli_fetch_assoc($sql);
     
 

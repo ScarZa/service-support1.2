@@ -151,8 +151,9 @@ if (!empty($_REQUEST['year'])) {
             from ss_conferance ssc
             inner join ss_room r on r.room_id=ssc.room
             inner join emppersonal e on e.empno=ssc.empno_request
-            inner join department d on d.depId=e.depid
-            WHERE approve='Y' and start_date between $code_where
+            inner JOIN work_history wh ON wh.empno=e.empno
+            INNER JOIN department d ON d.depId = wh.depid
+            WHERE approve='Y' and start_date between $code_where and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) 
             order by ssc.conf_id desc";
     $qr=mysqli_query($db,$q);
 if($qr==''){exit();}

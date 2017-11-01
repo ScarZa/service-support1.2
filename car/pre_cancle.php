@@ -31,10 +31,11 @@ if($date >= $bdate and $date <= $edate){
 FROM ss_car ssc
 INNER JOIN emppersonal e1 ON e1.empno = ssc.empno_request
 INNER JOIN pcode p1 ON e1.pcode = p1.pcode
-INNER JOIN department d1 ON e1.depid = d1.depId
+inner JOIN work_history wh ON wh.empno=e1.empno
+INNER JOIN department d1 ON d1.depId = wh.depid
 INNER JOIN amphur am on am.AMPHUR_ID=ssc.amphur
 INNER JOIN province pv on pv.PROVINCE_ID=ssc.province
-where ssc.approve='N' and ssc.start_date between '$this_year-10-01' and '$next_year-09-30'
+where ssc.approve='N' and ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by ssc.car_id desc";
     $qr = mysqli_query($db,$q);
     $q2="SELECT ssc . * , CONCAT( p1.pname, e1.firstname,  ' ', e1.lastname ) AS fullname, d1.depName AS dep, e1.empno AS empno,
@@ -42,10 +43,11 @@ order by ssc.car_id desc";
 FROM ss_car ssc
 INNER JOIN emppersonal e1 ON e1.empno = ssc.empno_request
 INNER JOIN pcode p1 ON e1.pcode = p1.pcode
-INNER JOIN department d1 ON e1.depid = d1.depId
+inner JOIN work_history wh ON wh.empno=e1.empno
+INNER JOIN department d1 ON d1.depId = wh.depid
 INNER JOIN amphur am on am.AMPHUR_ID=ssc.amphur
 INNER JOIN province pv on pv.PROVINCE_ID=ssc.province
-where ssc.approve='C'and ssc.start_date between '$this_year-10-01' and '$next_year-09-30'
+where ssc.approve='C'and ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by ssc.car_id desc";
     $qr2 = mysqli_query($db,$q2);
     $q3="SELECT ssc . * , CONCAT( p1.pname, e1.firstname,  ' ', e1.lastname ) AS fullname, d1.depName AS dep, e1.empno AS empno,
@@ -53,10 +55,11 @@ order by ssc.car_id desc";
 FROM ss_car ssc
 INNER JOIN emppersonal e1 ON e1.empno = ssc.empno_request
 INNER JOIN pcode p1 ON e1.pcode = p1.pcode
-INNER JOIN department d1 ON e1.depid = d1.depId
+inner JOIN work_history wh ON wh.empno=e1.empno
+INNER JOIN department d1 ON d1.depId = wh.depid
 INNER JOIN amphur am on am.AMPHUR_ID=ssc.amphur
 INNER JOIN province pv on pv.PROVINCE_ID=ssc.province
-where ssc.pay='N'and ssc.start_date between '$this_year-10-01' and '$next_year-09-30'
+where ssc.pay='N'and ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by ssc.car_id desc";
     $qr3= mysqli_query($db,$q3);
 ?>

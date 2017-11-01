@@ -98,18 +98,18 @@ if($method!='back'){
                                $code3="INNER JOIN ss_car_type ct ON ct.cartype_id=ssc.car_type
                                        INNER JOIN ss_carlicense lc ON lc.license_id=ssc.license_plate";
                             }
-                                        
                             $select_det=  mysqli_query($db,"SELECT ssc . * , CONCAT( p1.pname, e1.firstname,  ' ', e1.lastname ) AS fullname, d1.depName AS dep, e1.empno AS empno,
                                  am.AMPHUR_NAME as amphur, pv.PROVINCE_NAME as province, ssc.passenger,$code1 
 (SELECT CONCAT(e1.firstname,  ' ', e1.lastname ) FROM ss_car ssc INNER JOIN emppersonal e1 ON e1.empno = ssc.passenger WHERE ssc.passenger=e1.empno and ssc.car_id ='$car_id') pass_name $code2  
 FROM ss_car ssc
 INNER JOIN emppersonal e1 ON e1.empno = ssc.empno_request
 INNER JOIN pcode p1 ON e1.pcode = p1.pcode
-INNER JOIN department d1 ON e1.depid = d1.depId
+inner JOIN work_history wh ON wh.empno=e1.empno
+INNER JOIN department d1 ON d1.depId = wh.depid
 INNER JOIN amphur am on am.AMPHUR_ID=ssc.amphur
 INNER JOIN province pv on pv.PROVINCE_ID=ssc.province
 $code3
-WHERE ssc.car_id ='$car_id'");
+WHERE ssc.car_id ='$car_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
                             $detial_l= mysqli_fetch_assoc($select_det);
                             
                             if(isset($method)=='edit_mile_car'){
