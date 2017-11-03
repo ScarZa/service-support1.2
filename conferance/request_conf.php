@@ -47,8 +47,8 @@ function nextbox(e, id) {
     <section class="content">
         <form class="navbar-form" role="form" action='index.php?page=process/prcroom' enctype="multipart/form-data" method='post' onSubmit="return Check_txt()">
 <div class="row">
-    <div class="col-lg-1"></div>
-          <div class="col-lg-10">
+    
+          <div class="col-lg-10 col-lg-offset-1">
               <div class="panel panel-warning">
                 <div class="panel-heading">
                     <h3 class="panel-title"><img src='images/phonebook.ico' width='25'> <font color='brown'>เขียนขอใช้ห้องประชุม</font></h3>

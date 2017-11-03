@@ -85,7 +85,7 @@ if($_SESSION['ss_status']=='USER'){
 }  else {
   $code="";  
 }
-    $q="select r.room_name, d.depName, ssc.start_date, ssc.end_date, ssc.start_time, ssc.end_time, ssc.amount, ssc.conf_id, ssc.approve, ssc.conferance_no
+    $q="select ssc.conf_id, r.room_name, d.depName, ssc.start_date, ssc.end_date, ssc.start_time, ssc.end_time, ssc.amount, ssc.conf_id, ssc.approve, ssc.conferance_no
             from ss_conferance ssc
             inner join ss_room r on r.room_id=ssc.room
             inner join emppersonal e on e.empno=ssc.empno_request
@@ -151,11 +151,12 @@ order by ssc.car_id desc";
                         <td width="3%" align="center"><b>ลำดับ</b></td>
                         <td width="8%" align="center"><b>เลขใบคำขอ</b></td>
                         <td width="15%" align="center"><b>ห้องประชุม</b></td>
-                        <td width="19%" align="center"><b>หน่วยงาน</b></td>
+                        <td width="15%" align="center"><b>หน่วยงาน</b></td>
                         <td width="20%" align="center"><b>จากวันที่</b></td>
                         <td width="15%" align="center"><b>เวลา</b></td>
                         <td width="6%" align="center"><b>จำนวนผู้เข้าร่วม</b></td>
                         <td width="6%" align="center"><b>สถานะ</b></td>
+                        <td width="6%" align="center"><b>พิมพ์แบบขออนุญาต</b></td>
                     </tr>
                         </thead>
                         <tbody>
@@ -184,6 +185,7 @@ order by ssc.car_id desc";
                                     <img src="images/button_cancel.ico" width="20" title="ไม่อนุมัติ">
                                      <?php }?>
                             </td>
+                            <td align="center"><a href="#" onClick="window.open('conferance/conf_request_paper.php?conf_id=<?= $result['conf_id']; ?>','','width=700,height=900'); return false;" title="พิมพ์ใบขอรถยนต์"><img src='images/printer.ico' alt="" width='30' /></a></td>
                         </tr>
                     <?php $i++;
                 }

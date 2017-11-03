@@ -69,7 +69,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
             ขออนุญาตใช้รถราชการที่ <b><?= $car['place']?></b>
             <?= "อำเภอ&nbsp;<b>".$car['amphur']."</b>&nbsp;จังหวัด&nbsp;<b>".$car['province']?></b>
             เพื่อ <b><?= $car['obj']?></b> มีคนนั่ง <b><?= $car['amount']?></b> คน
-            ในวันที่&nbsp; <b><?= DateThai2($car['start_date'])?></b>&nbsp;  เวลา &nbsp; <b><?= substr($car['start_time'], 1,4)?></b>&nbsp; น. &nbsp;ถึงวันที่&nbsp; <b><?= DateThai2($car['end_date'])?></b>&nbsp; เวลา&nbsp; <b><?= substr($car['end_time'],1,4)?></b> &nbsp;น.
+            ในวันที่&nbsp; <b><?= DateThai2($car['start_date'])?></b>&nbsp;  เวลา &nbsp; <b><?= substr($car['start_time'], 0,5)?></b>&nbsp; น. &nbsp;ถึงวันที่&nbsp; <b><?= DateThai2($car['end_date'])?></b>&nbsp; เวลา&nbsp; <b><?= substr($car['end_time'],0,5)?></b> &nbsp;น.
                             หรือตามหนังสือที่แนบท้ายนี้ โดยให้ <b><?= $car['pass_name']?></b> เป็นผู้ควบคุม หากมีการเปลี่ยนแปลงหรืองดการใช้ จะแจ้งให้ผู้สั่งจ่ายรถทราบล่วงหน้า หากเลยกำหนดเวลาการขอใช้ 15 นาที ให้ถือว่าไม่ประสงค์ใช้รถคันดังกล่าว และการใช้รถในครั้งนี้ขอให้พนักงานขับรถ
                             <?php 
                             if($car['wait']=='Y'){
@@ -145,8 +145,8 @@ $pdf->autoLangToFont = true;
 $pdf->SetDisplayMode('fullpage');
 
 $pdf->WriteHTML($html, 2);
-$pdf->Output("../MyPDF/car$car_id.pdf");
-echo "<meta http-equiv='refresh' content='0;url=../MyPDF/car$car_id.pdf' />";
+$pdf->Output("../MyPDF/car.pdf");
+echo "<meta http-equiv='refresh' content='0;url=../MyPDF/car.pdf' />";
 ?>
 </body>
 </html>
