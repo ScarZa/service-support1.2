@@ -99,10 +99,11 @@ if($_SESSION['ss_status']=='USER'){
 FROM ss_car ssc
 INNER JOIN emppersonal e ON e.empno = ssc.empno_request
 INNER JOIN pcode p1 ON e.pcode = p1.pcode
-INNER JOIN department d1 ON e.depid = d1.depId
+inner JOIN work_history wh ON wh.empno=e.empno
+inner join department d1 on d1.depId=wh.depid
 INNER JOIN amphur am on am.AMPHUR_ID=ssc.amphur
 INNER JOIN province pv on pv.PROVINCE_ID=ssc.province
-where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30'
+where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 order by ssc.car_id desc";
                 $qr = mysqli_query($db,$q);
                 $qr2 = mysqli_query($db,$q2);
