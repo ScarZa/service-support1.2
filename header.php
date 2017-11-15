@@ -196,6 +196,9 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                                         <li><a href="index.php?page=conferance/pre_request"><img src='images/Lfolder.ico' width='25'> บันทึกขอใช้ห้องประชุม</a></li>
                                         <li><a href="index.php?page=conferance/pre_confirm"><img src='images/Lfolder.ico' width='25'> บันทึกอนุมัติใช้ห้องประชุม</a></li>
                                         <li><a href="index.php?page=conferance/pre_cancle"><img src='images/Lfolder.ico' width='25'> บันทึกไม่อนุมัติ/ยกเลิกห้องประชุม</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="index.php?page=conferance/report_month_conf"><img src='images/if_Report_669954.ico' width='25'> รายงานห้องประชุม(รายเดือน)</a></li>
+                                        <li><a href="index.php?page=conferance/report_year_conf"><img src='images/if_Report_669954.ico' width='25'> รายงานห้องประชุม(รายปี)</a></li>
                                     </ul>            
                                 </li>
     <?php } if ($_SESSION['ss_process'] == '3' or $_SESSION['ss_process'] == '0') { ?>
@@ -319,5 +322,12 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
             $take_date = "".@$take_date[2]."-".@$take_date[1]."-".$pyear."";
             return $take_date;
         }
+        
+        /////ตรวจสอบว่าค่านั้นเป็นประเภทวันที่หรือไม่    
+    function validateDate($date, $format = 'Y-m-d H:i:s')//หาค่าว่าเป็นชนิด date หรือไม่
+{
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
+}
         ?>
             <div id="page-wrapper">
