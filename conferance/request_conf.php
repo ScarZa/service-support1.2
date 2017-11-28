@@ -201,7 +201,7 @@ function nextbox(e, id) {
                             ?>
                           
                             <div class="form-group">
-                                <input type="checkbox" name="mic_table" value="Y" <?= $mtchecked?>> 
+                                <input type="checkbox" name="mic_table" value="Y" <?= isset($mtchecked)?$mtchecked:''?>> 
                               &nbsp;ไมค์ตั้งโต๊ะประชุม จำนวน <input type="text" name="mic_table" value="<?= isset($edit_person['mic_table'])?$edit_person['mic_table']:''?>" size="1" onKeyUp="javascript:inputDigits(this);"> ตัว<br>
                             </div><p>
                             <div class="form-group">

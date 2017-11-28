@@ -136,7 +136,7 @@ $conferance_no="$Y/$Ln";
                    mic_wireless='$mic_wireless', mic_line='$mic_line', visualizer='$visualizer',projector='$projector', comp='$comp', format='$format',
                       room='$room' where conf_id='$conf_id'");
 
-    $edit_event=mysqli_query($db,"update tbl_event set event_start='$start_date $start_time',event_end='$end_date $end_time' where workid='$conf_id' and process='2'");
+    $edit_event=mysqli_query($db,"update tbl_event set event_start='$start_date $start_time',event_end='$end_date $end_time',typela='$room' where workid='$conf_id' and process='2'");
 
     if ($edit & $edit_event == false) {
         echo "<p>";
