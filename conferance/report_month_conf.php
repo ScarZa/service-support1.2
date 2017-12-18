@@ -116,7 +116,7 @@ WHEN '2' THEN 1
 ELSE NULL END) AS smallroom,
 COUNT(room) as totalroom
 FROM ss_conferance
-WHERE (start_date BETWEEN '$take_month1' AND '$take_month2') 
+WHERE (start_date BETWEEN '$take_month1' AND '$take_month2') and approve='Y'
 GROUP BY start_date 
 UNION 
 SELECT 'รวม' as total,
@@ -130,7 +130,7 @@ WHEN '2' THEN 1
 ELSE NULL END) AS smallroom,
 COUNT(room) as totalroom
 FROM ss_conferance ssc
-WHERE (start_date BETWEEN '$take_month1' AND '$take_month2') 
+WHERE (start_date BETWEEN '$take_month1' AND '$take_month2') and approve='Y' 
 ORDER BY start_date";
     $qr = mysqli_query($db,$q);
        }         ?>

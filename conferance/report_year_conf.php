@@ -58,7 +58,7 @@ ELSE NULL END) AS smallroom,
 COUNT(ssc.room) as totalroom
 FROM ss_conferance ssc
 INNER JOIN month m on m.month_id=SUBSTR(start_date,6,2)
-WHERE (start_date BETWEEN '$this_year-10-01' and '$next_year-09-30') 
+WHERE (start_date BETWEEN '$this_year-10-01' and '$next_year-09-30') and approve='Y'
 GROUP BY m.m_id
 UNION 
 SELECT 'รวม' as total,
@@ -73,7 +73,7 @@ ELSE NULL END) AS smallroom,
 COUNT(ssc.room) as totalroom
 FROM ss_conferance ssc
 INNER JOIN month m on m.month_id=SUBSTR(ssc.start_date,6,2)
-WHERE (ssc.start_date BETWEEN '$this_year-10-01' and '$next_year-09-30') 
+WHERE (ssc.start_date BETWEEN '$this_year-10-01' and '$next_year-09-30') and approve='Y'
 ";
     $qr = mysqli_query($db,$q);
        //}         ?>

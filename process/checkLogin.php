@@ -37,19 +37,21 @@ echo "<div class='alert alert-dismissable alert-success'>
 	  <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
 	  <a class='alert-link' target='_blank' href='#'><center>กำลังดำเนินการ</center></a> 
 </div>";
-$sql = $db->prepare("select CONCAT(e1.firstname,' ',e1.lastname) as fullname, ss.ss_Name as id, ss.ss_Status as status, ss.ss_process as process, e1.depid as dep
+$sql = $db->prepare("select CONCAT(e1.firstname,' ',e1.lastname) as fullname, ss.ss_Name as id, ss.ss_Status as status, ss.ss_process as process, wh.depid as dep
 from ss_member ss 
 INNER JOIN emppersonal e1 on e1.empno=ss.ss_Name
-where   ss.ss_Username= ? && ss.ss_Password= ?");
+inner JOIN work_history wh ON wh.empno=e1.empno
+where (ss.ss_Username= ? && ss.ss_Password= ?) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
 $sql->bind_param("ss", $user_account,$user_pwd);
 $sql->execute();  
 $sql->bind_result($fullname,$id,$status_usere,$process,$dep);
 $sql->fetch();
 if (empty($id)) {
-$sql = $db->prepare("select CONCAT(e1.firstname,' ',e1.lastname) as fullname, e1.empno as id, e1.depid as dep 
+$sql = $db->prepare("select CONCAT(e1.firstname,' ',e1.lastname) as fullname, e1.empno as id, wh.depid as dep 
 from emppersonal e1
+inner JOIN work_history wh ON wh.empno=e1.empno
 inner join member m on m.Name=e1.empno
-where m.Username= ? && m.Password= ?");
+where (m.Username= ? && m.Password= ?) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
 $sql->bind_param("ss", $user_account,$user_pwd);
 $sql->execute();  
 $sql->bind_result($fullname,$id,$dep);
