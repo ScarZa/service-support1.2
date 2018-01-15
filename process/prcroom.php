@@ -119,7 +119,7 @@ $conferance_no="$Y/$Ln";
                       room='$room' ");
 
     $last_insert = mysqli_insert_id($db);
-    $sql_line = mysqli_query($db,"select ssc.conf_id,ssc.conferance_no,ssc.obj,ssc.start_date,ssc.start_time,ssc.end_date,ssc.end_time,ssc.amount
+    $sql_line = mysqli_query($db,"select ssc.conf_id,ssc.conferance_no,ssc.obj,ssc.start_date,SUBSTR(ssc.start_time,1,5)start_time,ssc.end_date,SUBSTR(ssc.end_time,1,5)end_time,ssc.amount
 , concat(e1.firstname,' ',e1.lastname) as fullname, d1.depName, r.room_name
             from ss_conferance ssc  
             INNER JOIN ss_room r on r.room_id=ssc.room
