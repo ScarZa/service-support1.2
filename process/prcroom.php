@@ -117,6 +117,44 @@ $conferance_no="$Y/$Ln";
                 conferance_no='$conferance_no', start_time='$start_time', end_time='$end_time', amount='$amount', equip='$equip', audio='$audio', mic_table='$mic_table',
                    mic_wireless='$mic_wireless', mic_line='$mic_line', visualizer='$visualizer',projector='$projector', comp='$comp', format='$format',
                       room='$room' ");
+
+    $last_insert = mysqli_insert_id($db);
+    $sql_line = mysqli_query($db,"select ssc.conf_id,ssc.conferance_no,ssc.obj,ssc.start_date,ssc.start_time,ssc.end_date,ssc.end_time,ssc.amount
+, concat(e1.firstname,' ',e1.lastname) as fullname, d1.depName, r.room_name
+            from ss_conferance ssc  
+            INNER JOIN ss_room r on r.room_id=ssc.room
+            inner join emppersonal e1 on e1.empno=ssc.empno_request
+            inner JOIN work_history wh ON wh.empno=e1.empno
+            inner join department d1 on d1.depId=wh.depid
+            where ssc.conf_id=".$last_insert." and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
+    $LineText = mysqli_fetch_assoc($sql_line);
+    include_once 'option/funcDateThai.php';
+        //////////////////// Line Notify //////////////////////////////
+define('LINE_API',"https://notify-api.line.me/api/notify");
+function notify_message($message,$token){
+ $queryData = array('message' => $message);
+ $queryData = http_build_query($queryData,'','&');
+ $headerOptions = array( 
+         'http'=>array(
+            'method'=>'POST',
+            'header'=> "Content-Type: application/x-www-form-urlencoded\r\n"
+                      ."Authorization: Bearer ".$token."\r\n"
+                      ."Content-Length: ".strlen($queryData)."\r\n",
+            'content' => $queryData
+         ),
+ );
+ $context = stream_context_create($headerOptions);
+ $result = file_get_contents(LINE_API,FALSE,$context);
+ $res = json_decode($result);
+ return $res;
+} 
+$token = 'token key';
+$text = "แจ้งขอห้องประชุม :    วันที่".DateThai1($LineText['start_date'])." ".$LineText['start_time']."น.\n ถึงวันที่".DateThai1($LineText['end_date'])." ".$LineText['end_time']."น.\n ".$LineText['room_name']." เพื่อ ".$LineText['obj']."\n  จำนวน ".$LineText['amount']." ผู้แจ้ง ".$LineText['fullname']." งาน ".$LineText['depName'];
+ 
+$res = notify_message($text,$token);
+//print_r($res);
+
+/////////////////////
     
     if ($request == false) {
         echo "<p>";
