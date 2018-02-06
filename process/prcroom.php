@@ -97,7 +97,7 @@ AND (
     ('".$start_time."' BETWEEN start_time  AND end_time)
    OR 
     ('".$end_time."' BETWEEN  start_time  AND end_time )
-) and approve='Y'";
+)";
         $qry = mysqli_query($db,$sql) or die(mysqli_error($db));
 if($row = mysqli_fetch_array($qry))
 {
