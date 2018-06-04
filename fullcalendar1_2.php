@@ -106,4 +106,4 @@ while ($row = mysqli_fetch_array($li_car)) {  ?>
 <script type="text/javascript" src="fullcalendar/js/fullcalendar-2.1.1/lang/th.js"></script>
 <script type="text/javascript" src="fullcalendar/script.js"></script>   
 <script type="text/javascript" src="fullcalendar/script2.js"></script> 
-   
+<?php require_once 'footer.php'; ?>   

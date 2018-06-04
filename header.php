@@ -157,11 +157,11 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                     <a class="navbar-brand" href="./"><font color='#fedd00'><b>Service & Support System v.1.2.1 </b></font><!--ระบบบริหารความเสี่ยง <? echo $resultHos['name']; ?>--></a>
                 </div>
                 <?php
-                if (!empty($_SESSION['ssuser_id'])) {
-                    $sqlUser = mysqli_query($db, "select admin from user where user_id='$user_id' ");
-                    $resultUser = mysqli_fetch_assoc($sqlUser);
-                    $admin = $_SESSION['admin'];
-                }
+//                if (!empty($_SESSION['ssuser_id'])) {
+//                    $sqlUser = mysqli_query($db, "select admin from user where user_id='$user_id' ");
+//                    $resultUser = mysqli_fetch_assoc($sqlUser);
+//                    $admin = $_SESSION['admin'];
+//                }
                 ?>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -184,7 +184,6 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                                     <li><a href="index.php?page=user/pre_order"><img src='images/analysis.ico' width='25'> ตรวจสอบสถานะ</a></li>                                   
                                 </ul>
                             </li>
-                        <?php } ?>
                         <?php
                         if ($_SESSION['ss_status'] == 'ADMIN' or $_SESSION['ss_status'] == 'SUSER') {
                             if ($_SESSION['ss_process'] == '2' or $_SESSION['ss_process'] == '0') {
@@ -199,6 +198,7 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                                         <li class="divider"></li>
                                         <li><a href="index.php?page=conferance/report_month_conf"><img src='images/if_Report_669954.ico' width='25'> รายงานห้องประชุม(รายเดือน)</a></li>
                                         <li><a href="index.php?page=conferance/report_year_conf"><img src='images/if_Report_669954.ico' width='25'> รายงานห้องประชุม(รายปี)</a></li>
+                                        <li><a href="#" onClick="return popup('fullcalendar/fullcalendar4.php', popup, 820, 670);" title="ดูวันเกิด"><img src='images/calendar-clock.ico' width='25'> ปฏิทินวันเกิด</a></li>
                                     </ul>            
                                 </li>
     <?php } if ($_SESSION['ss_process'] == '3' or $_SESSION['ss_process'] == '0') { ?>
@@ -218,14 +218,30 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                                         <li><a href="index.php?page=car/report_work_rider"><img src='images/driver.ico' width='25'> รายงานการปฏิบัติงาน พขร.</a></li>
                                     </ul>            
                                 </li><?php }
-}
+                        }}
 ?>
                         <li><a href="#">&nbsp;</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right navbar-user">
 
-<?php if ($_SESSION['ss_status'] == 'SUSER' or $_SESSION['ss_status'] == 'ADMIN') { ?>
+
+<?PHP if (empty($_SESSION['ss_id'])) { ?>            	
+                            <li> 	
+                                <form class="navbar-form navbar-right" action='process/checkLogin.php' method='post'>
+                                    <div class="form-group">
+                                        <input type="text" placeholder="User Name" name='user_account' class="form-control" value='' required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" placeholder="Password" name='user_pwd' class="form-control"  value='' required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-lock"></i> Sign in</button> 
+                                    <div class="form-group">
+                                    </div>
+                                </form>
+                            </li>
+                                <?PHP } else { 
+                            if ($_SESSION['ss_status'] == 'SUSER' or $_SESSION['ss_status'] == 'ADMIN') { ?>
 
                             <script language="JavaScript">
                                 function bodyOnload()
@@ -242,21 +258,6 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                             <?php
                         }
                         ?>
-<?PHP if (empty($_SESSION['ss_id'])) { ?>            	
-                            <li> 	
-                                <form class="navbar-form navbar-right" action='process/checkLogin.php' method='post'>
-                                    <div class="form-group">
-                                        <input type="text" placeholder="User Name" name='user_account' class="form-control" value='' required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" placeholder="Password" name='user_pwd' class="form-control"  value='' required>
-                                    </div>
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-lock"></i> Sign in</button> 
-                                    <div class="form-group">
-                                    </div>
-                                </form>
-                            </li>
-                                <?PHP } else { ?>
                             <li class="dropdown user-dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src='images/personal.ico' width='20'> 
                                     <?php
@@ -283,10 +284,9 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                                     <li class="divider"></li>
                                     <li><a href="index.php?page=process/logout"><img src='images/exit.ico' width='25'> Log Out</a></li>
                                 </ul>
-                                </form>
-<?PHP } ?>
-                        </li>
-                    </ul>
+ <?PHP } ?>
+                      </li>
+                    </ul>  
                 </div><!-- /.navbar-collapse -->
             </nav>
              <script type="text/javascript">

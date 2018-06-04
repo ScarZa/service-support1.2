@@ -118,9 +118,9 @@
 (select round((select sum(ssc.distance) from ss_car ssc where pay='Y' and approve='Y' and cl.license_id=ssc.license_plate and ssc.start_date between '$take_month1' and '$take_month2')/
 (select sum(do.liter) from ss_detial_oil do where do.license_id=cl.license_id and do.reg_date between '$take_month1' and '$take_month2'),2))av,
 (select sum(do.maintenance) from ss_detial_oil do where do.license_id=cl.license_id and do.reg_date between '$take_month1' and '$take_month2') maintenance   
-from  ss_carlicense cl
+from ss_car ssc  
+right outer join ss_carlicense cl on cl.license_id=ssc.license_plate
 left outer join ss_detial_oil do on do.license_id=cl.license_id
-left outer join ss_car ssc on cl.license_id=ssc.license_plate
 left outer join ss_oil_type ot on ot.oil_id=do.oil_type
 group by cl.license_id";
     $qr = mysqli_query($db,$q);
