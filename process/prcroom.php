@@ -270,7 +270,7 @@ $res = notify_message($text,$token['notify_tokenkey']);
 }else if ($_POST['method'] == 'notify') {
     $notify_id=$_REQUEST['notify_id'];
     $notify_tokenkey = $_POST['notify_tokenkey'];
-    $edit = mysqli_query($db,"update notify set notify_tokenkey='notify_tokenkey' where notify_id='$notify_id'");
+    $edit = mysqli_query($db,"update notify set notify_tokenkey='$notify_tokenkey' where notify_id='$notify_id'");
 
     if ($edit == false) {
         echo "<p>";
