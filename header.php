@@ -277,6 +277,7 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                                         <?php } ?>
                                         <?php if ($_SESSION['ss_status'] == 'ADMIN') { ?>
                                             <li><a href="index.php?page=admin/add_User"><img src='images/Settings.ico' width='25'> ตั้งค่าผู้ใช้งาน</a></li>
+                                            <li><a href="index.php?page=admin/add_notify"><img src='images/Settings.ico' width='25'> ตั้งค่า Notify</a></li>
         <?php } echo "<li class='divider'></li>";
     }
     ?>

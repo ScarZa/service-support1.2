@@ -1,5 +1,5 @@
 <?php
-if($_POST['method'] == 'request_room' or $_POST['method'] == 'edit_room' or $_POST['method'] == 'add_conf' or $_POST['method'] == 'edit_conf'){
+if($_POST['method'] == 'request_room' or $_POST['method'] == 'edit_room' or $_POST['method'] == 'add_conf' or $_POST['method'] == 'edit_conf' or $_POST['method'] == 'notify'){
         include 'option/jquery.php'; 
         include 'connection/connect.php';
 }else{  @session_start(); 
@@ -147,11 +147,12 @@ function notify_message($message,$token){
  $result = file_get_contents(LINE_API,FALSE,$context);
  $res = json_decode($result);
  return $res;
-} 
-$token = 'token key';
-$text = "แจ้งขอห้องประชุม :    วันที่".DateThai1($LineText['start_date'])." ".$LineText['start_time']."น.\n ถึงวันที่".DateThai1($LineText['end_date'])." ".$LineText['end_time']."น.\n ".$LineText['room_name']." เพื่อ ".$LineText['obj']."\n  จำนวน ".$LineText['amount']." ผู้แจ้ง ".$LineText['fullname']." งาน ".$LineText['depName'];
+}
+$sql = mysqli_query($db,"SELECT notify_tokenkey FROM notify WHERE notify_id=3");
+$token = mysqli_fetch_assoc($sql);
+$text = "แจ้งขอห้องประชุม : วันที่".DateThai1($LineText['start_date'])." ".$LineText['start_time']."น.\nถึงวันที่".DateThai1($LineText['end_date'])." ".$LineText['end_time']."น.\n".$LineText['room_name']." \nเพื่อ ".$LineText['obj']."\nจำนวน ".$LineText['amount']." คน\nผู้แจ้ง ".$LineText['fullname']."\nงาน ".$LineText['depName'];
  
-$res = notify_message($text,$token);
+$res = notify_message($text,$token['notify_tokenkey']);
 //print_r($res);
 
 /////////////////////
@@ -266,5 +267,22 @@ $res = notify_message($text,$token);
     } else {
             echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=index.php?page=conferance/add_conf'>";
      }
+}else if ($_POST['method'] == 'notify') {
+    $notify_id=$_REQUEST['notify_id'];
+    $notify_tokenkey = $_POST['notify_tokenkey'];
+    $edit = mysqli_query($db,"update notify set notify_tokenkey='notify_tokenkey' where notify_id='$notify_id'");
+
+    if ($edit == false) {
+        echo "<p>";
+        echo "Update not complete" . mysqli_error($db);
+        echo "<br />";
+        echo "<br />";
+
+        echo "	<span class='glyphicon glyphicon-remove'></span>";
+        echo "<a href='index.php?page=admin/add_notify' >กลับ</a>";
+    
+    } else {
+            echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=index.php'>";
+        }
 }
 ?>
