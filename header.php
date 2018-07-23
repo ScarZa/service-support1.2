@@ -23,7 +23,7 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
         <meta name="description" content="">
         <meta name="author" content="">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-        <title>ระบบข้อมูลบุคคลากรโรงพยาบาล</title>
+        <title>ระบบสนับสนุน</title>
         <LINK REL="SHORTCUT ICON" HREF="<?= $fol . $pic; ?>">
         <!-- Bootstrap core CSS -->
         <link href="option/css/bootstrap.css" rel="stylesheet">
