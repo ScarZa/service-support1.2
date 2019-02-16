@@ -170,6 +170,7 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
                         <li><a href="./"><img src='images/gohome.ico' width='25'> หน้าหลัก</a></li> 		
                         <li><a href="#" onClick="return popup('fullcalendar/fullcalendar1.php', popup, 820, 670);" title="ดูการใช้ห้องประชุม"><img src='images/calendar-clock.ico' width='25'> ปฏิทินการใช้ห้องประชุม</a></li>
                         <li><a href="#" onClick="return popup('fullcalendar/fullcalendar2.php', popup, 820, 670);" title="ดูการใช้รถยนต์"><img src='images/schedule.ico' width='25'> ปฏิทินการใช้รถยนต์</a></li>
+                        <li><a href="#" onClick="return popup('display_conf.html', popup, 1366, 768);" title="ดูการใช้ห้องประชุมวันนี้"><img src='images/calendar-clock.ico' width='25'> ใช้ห้องประชุมวันนี้</a></li>
                         <?php if (!empty($_SESSION['ss_status'])) { ?>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src='images/Notepad.ico' width='25'> ขอใช้บริการ/สนับสนุน <b class="caret"></b></a>

@@ -91,6 +91,46 @@ $car_no="$Y/$Ln";
             car_no='$car_no', empno_request='$empno_request', obj='$obj', request_date='$request_date', start_date='$start_date', end_date='$end_date',
                 start_time='$start_time', end_time='$end_time', amount='$amount', place='$place', province='$province', amphur='$amphur',
                    passenger='$passenger', wait='$wait', amount_date='$amount_date'");
+
+                   $last_insert = mysqli_insert_id($db);
+                   $sql_line = mysqli_query($db,"select ssc.car_id,ssc.place,ssc.start_date,SUBSTR(ssc.start_time,1,5)start_time,ssc.end_date,SUBSTR(ssc.end_time,1,5)end_time,ssc.amount
+                   , concat(e1.firstname,' ',e1.lastname) as fullname, d1.depName
+                               from ss_car ssc  
+                               inner join emppersonal e1 on e1.empno=ssc.empno_request
+                               inner JOIN work_history wh ON wh.empno=e1.empno
+                               inner join department d1 on d1.depId=wh.depid
+                               where ssc.car_id=".$last_insert." and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
+                   $LineText = mysqli_fetch_assoc($sql_line);
+                   include_once 'option/funcDateThai.php';               
+    //////////////////// Line Notify //////////////////////////////
+define('LINE_API',"https://notify-api.line.me/api/notify");
+function notify_message($message,$token){
+ $queryData = array('message' => $message);
+ $queryData = http_build_query($queryData,'','&');
+ $headerOptions = array( 
+         'http'=>array(
+            'method'=>'POST',
+            'header'=> "Content-Type: application/x-www-form-urlencoded\r\n"
+                      ."Authorization: Bearer ".$token."\r\n"
+                      ."Content-Length: ".strlen($queryData)."\r\n",
+            'content' => $queryData
+         ),
+ );
+ $context = stream_context_create($headerOptions);
+ $result = file_get_contents(LINE_API,FALSE,$context);
+ $res = json_decode($result);
+ return $res;
+}
+$sql = mysqli_query($db,"SELECT notify_tokenkey FROM notify WHERE notify_id=2");
+$token = mysqli_fetch_assoc($sql);
+if(!empty($token['notify_tokenkey'])){
+    $text = "แจ้งขอจองรถ : วันที่".DateThai1($LineText['start_date'])." ".$LineText['start_time']."น.\nถึงวันที่".DateThai1($LineText['end_date'])." ".$LineText['end_time']."น.\nเพื่อไป ".$LineText['place']."\nจำนวน ".$LineText['amount']." คน\nผู้แจ้ง ".$LineText['fullname']."\nงาน ".$LineText['depName'];
+    $res = notify_message($text,$token['notify_tokenkey']);
+}
+
+//print_r($res);
+
+/////////////////////               
     
     if ($request == false) {
         echo "<p>";

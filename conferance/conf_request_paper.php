@@ -46,7 +46,7 @@ WHERE ssc.conf_id =$conf_id and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_
 require_once('../option/library/mpdf60/mpdf.php'); //ที่อยู่ของไฟล์ mpdf.php ในเครื่องเรานะครับ
 ob_start(); // ทำการเก็บค่า html นะครับ*/
 ?>
-    
+  <div align='right'>เลขที่คำขอ : <?= $conf['conferance_no']?></div>
 
     <center><h4 align="center">แบบฟอร์มการขอใช้ห้องประชุม/อุปกรณ์โสตทัศนศึกษา<br>
                             งานโสตทัศนศึกษา <?= $hospital['name']?>
