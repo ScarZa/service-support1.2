@@ -51,7 +51,7 @@ $sql = $db->prepare("select CONCAT(e1.firstname,' ',e1.lastname) as fullname, e1
 from emppersonal e1
 inner JOIN work_history wh ON wh.empno=e1.empno
 inner join member m on m.Name=e1.empno
-where (m.Username= ? && m.Password= ?) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
+where (m.Username= ? && m.Password= ?) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) and e1.status='1'");
 $sql->bind_param("ss", $user_account,$user_pwd);
 $sql->execute();  
 $sql->bind_result($fullname,$id,$dep);

@@ -37,6 +37,22 @@
                 background-color: #ffffff
             }
             </style>
+            <style>
+                /* body  {
+                  background-image: url("images/Phi-Ta-Khon_01.jpg");
+                  background-repeat: no-repeat;
+                  background-attachment: fixed;
+                  background-size: 1440px 900px;
+                } */
+                html { 
+  background: url(images/Phi-Ta-Khon.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  /* background-size: cover; */
+  background-size: 100% 100%;
+}
+                </style>
 </head>
 
 <body>
@@ -62,7 +78,7 @@
 
         function DisplayHead() {
 
-            $("#content_DP").empty().append($("<table width='100%' border='1'><thead></thead><tbody></tbody></table>"))
+            $("#content_DP").empty().append($("<table style='background-color:#e5e5e5' width='100%' border='1'><thead></thead><tbody></tbody></table>"))
             $("thead").append($("<th width='10%'><h2>วันที่</h2></th><th width='10%'><h2>เวลา</h2></th><th><h2>ชื่อโครงการ</h2></th><th><h2>หน่วยงานที่จัด</h2></th><th><h2>ห้องประชุม</h2></th>"))
 
         }
