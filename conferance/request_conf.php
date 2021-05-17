@@ -244,7 +244,7 @@ function nextbox(e, id) {
                     <div class="form-group">
                         <label for="room">ห้องประชุม</label>
                         <select name="room" id="room" required  class="form-control" onkeydown="return nextbox(event, 'dep');"> 
-				<?php	$sql = mysqli_query($db,"SELECT *  FROM ss_room order by room_id");
+				<?php	$sql = mysqli_query($db,"SELECT *  FROM ss_room where status=1 order by room_id");
 				 echo "<option value=''>--เลือกห้องประชุม--</option>";
 				 while( $result = mysqli_fetch_assoc( $sql ) ){
           if($result['room_id']==$edit_person['room']){$selected='selected';}else{$selected='';}

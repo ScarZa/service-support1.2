@@ -45,7 +45,7 @@
                   background-size: 1440px 900px;
                 } */
                 html { 
-  background: url(images/Phi-Ta-Khon.jpg) no-repeat center center fixed; 
+  background: url(images/rploei.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -57,7 +57,8 @@
 
 <body>
     <div class="col-lg-12">
-        <h1 align='center'>การใช้ห้องประชุมวันนี้</h1>
+        <div class='row'><div class='col-lg-3 col-lg-offset-9'><label class='col-lg-3'><b>เลือกวันที่ </b></label> <div class='col-lg-9'><input class='form-control' type='text' id='sel-date'></div></div></div>
+        <h1 align='center'>การใช้ห้องประชุมวันที่ <span id='day'></span></h1>
         <div id='content_DP'></div>
 
     </div><!-- /.login-box-body -->
@@ -70,50 +71,71 @@
     </script>
     <script type="text/javascript">
         $(function () {
+            $( "#sel-date" ).datepicker( regional );
+            $( "#sel-date" ).datepicker("setDate", new Date('Y-m-d')); //Set ค่าวัน
             DisplayHead();
             DisplayBody();
-            DisplayData();
-            var myRef = setInterval(function () { DisplayData() }, 1000);
+            $("#day").empty().append(ChangeMonthTH($('#sel-date').val()))
+            //DisplayData();
+            // var myRef = setInterval(function () { 
+            //     $("#tb").remove();
+            //     $("table").append($("<tbody id='tb'></tbody>"))
+            //     DisplayBody($('#sel-date').val()); }, 1000);
+            $("input#sel-date").change(function () { 
+                $("#day").empty().append(ChangeMonthTH($('#sel-date').val()))
+                $("#tb").remove();
+                $("table").append($("<tbody id='tb'></tbody>"))
+                DisplayBody($('#sel-date').val()); 
+                //DisplayData($('#sel-date').val());
+            });
         });
 
         function DisplayHead() {
 
-            $("#content_DP").empty().append($("<table style='background-color:#e5e5e5' width='100%' border='1'><thead></thead><tbody></tbody></table>"))
-            $("thead").append($("<th width='10%'><h2>วันที่</h2></th><th width='10%'><h2>เวลา</h2></th><th><h2>ชื่อโครงการ</h2></th><th><h2>หน่วยงานที่จัด</h2></th><th><h2>ห้องประชุม</h2></th>"))
+            $("#content_DP").empty().append($("<table style='background-color:#e5e5e5' width='100%' border='1'><thead id='th'></thead><tbody id='tb'></tbody></table>"))
+            $("#th").append($("<th width='10%'><h2>วันที่</h2></th><th width='10%'><h2>เวลา</h2></th><th><h2>ชื่อโครงการ</h2></th><th><h2>หน่วยงานที่จัด</h2></th><th><h2>ห้องประชุม</h2></th>"))
 
         }
 
-        function DisplayBody() {
-            $.getJSON("JsonData/DT_conf.php", function (dataTB) {
+        function DisplayBody(date=null) {
+            $.getJSON("JsonData/DT_conf.php",{ data : date }, function (dataTB) { console.log(dataTB)
                 if (dataTB != null && dataTB.length > 0) {
                     var I = 1;
                     var code_color = { 1: "#1e6c06", 2: "#930606", 3: "#416cbb", 4: "purple", 5: "#d92727", 6: "orange", 7: "yellow" };
                     var color = '';
                     var rows = 0;
-                    rows = dataTB.length;
+                    rows = dataTB.length;console.log(rows)
                     for (var i = 0; i < rows; i++) {
                         $.each(code_color, function (key, val) {
                             if (dataTB[i].room_id == key) {
                                 color = val;
                             }
                         });
-                        $("tbody").append($("<tr bgcolor=" + color + " style='color: white'><td id='data" + i + "1' align='center'></td><td id='data" + i + "2' align='center'></td><td id='data" + i + "3'></td><td id='data" + i + "4' align='center'></td><td id='data" + i + "5' align='center'></td></tr>"));
+                        $("#tb").append($("<tr bgcolor=" + color + " style='color: white'><td id='data" + i + "1' align='center'></td><td id='data" + i + "2' align='center'></td><td id='data" + i + "3'></td><td id='data" + i + "4' align='center'></td><td id='data" + i + "5' align='center'></td></tr>"));
                         I++;
                     }
+                    for (var i = 0; i < rows; i++) {
+                    console.log("data" + i);
+                    $("#data" + i + "1").html($("<h2>" + dataTB[i].date + "</h2>"));
+                    $("#data" + i + "2").html($("<h2>" + dataTB[i].stime + "<br>" + dataTB[i].to + "<br>" + dataTB[i].etime + "</h2>"));
+                    $("#data" + i + "3").html($(" <h2>&nbsp;&nbsp;" + dataTB[i].obj + "</h2>"));
+                    $("#data" + i + "4").html($("<h2>" + dataTB[i].depName + "</h2>"));
+                    $("#data" + i + "5").html($("<h2>" + dataTB[i].room_name + "<br>" + dataTB[i].room_name2 + "</h2>"));
+                }
                 }
             });
         }
 
-        function DisplayData() {
-            $.getJSON("JsonData/DT_conf.php", function (dataTB2) {
-                var rowCount = $('tbody tr').length;
+        function DisplayData(date=null) {
+            $.getJSON("JsonData/DT_conf.php",{ data : date }, function (dataTB2) { 
+                // var rowCount = $('#tb tr').length;
                 var rowData = dataTB2.length;
-                if (rowCount != rowData) {
-                    $("tbody").remove();
-                    $("table").append($("<tbody></tbody>"))
-                    DisplayBody();
-                    console.log('body.');
-                }
+                // if (rowCount != rowData) {
+                //     $("#tb").remove();
+                //     $("table").append($("<tbody id='tb'></tbody>"))
+                //     DisplayBody();
+                //     console.log('body.');
+                // }
                 
                 for (var i = 0; i < rowData; i++) {
                     console.log("data" + i);
@@ -125,6 +147,18 @@
                 }
             })
         }
+
+        function ChangeMonthTH(date) {
+            var monthTH = { 1: "มกราคม", 2: "กุมภาพันธ์", 3: "มีนาคม", 4: "เมษายน", 5: "พฤษภาคม", 6: "มิถุนายน", 7: "กรกฎาคม", 8:"สิงหาคม", 9: "กันยายน", 10:"ตุลาคม", 11:"พฤศจิกายน", 12:"ธันวาคม" };
+            var month = date.split("-");
+            $.each(monthTH, function (key, val) {
+                            if (parseInt(month[1]) == key) {
+                                Month = val;
+                            }
+                            
+        })
+        return  month[0]+' '+Month+' '+month[2];
+    }
     </script>
     <script language="JavaScript" type="text/javascript">
         var StayAlive = 1; // เวลาเป็นวินาทีที่ต้องการให้ WIndows เปิดออก 

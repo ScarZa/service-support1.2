@@ -14,14 +14,25 @@ $conn_DB->conn_PDO();
 set_time_limit(0);
 $rslt = array();
 $series = array();
-//$data = isset($_GET['data'])?$_GET['data']:'';
-$sql="SELECT curdate() as date,SUBSTR(sscon.start_time,1,5)start_time ,SUBSTR(sscon.end_time,1,5)end_time,sscon.obj,d1.depName,ssr.room_name,ssr.room_id
+function insert_date($take_date_conv) {
+    $take_date = explode("-", $take_date_conv);
+    $take_date_year = @$take_date[2] - 543;
+    $take_date = "$take_date_year-" . @$take_date[1] . "-" . @$take_date[0] . "";
+    return $take_date;
+}
+$date = isset($_GET['data'])?$_GET['data']:'';
+if(empty($date)){
+    $seldate = 'curdate()';
+}else{
+    $seldate = "'".insert_date($date)."'";
+}
+$sql="SELECT ".$seldate." as date,SUBSTR(sscon.start_time,1,5)start_time ,SUBSTR(sscon.end_time,1,5)end_time,sscon.obj,d1.depName,ssr.room_name,ssr.room_id
 FROM ss_conferance sscon
 inner join ss_room ssr on ssr.room_id=sscon.room
 inner join emppersonal e1 on e1.empno=sscon.empno_request
 inner JOIN work_history wh ON wh.empno=e1.empno
 inner join department d1 on d1.depId=wh.depid
-WHERE (curdate() between sscon.start_date and sscon.end_date) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+WHERE (".$seldate." between sscon.start_date and sscon.end_date) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
 and sscon.approve='Y'
 ORDER BY ssr.room_id ASC,start_time ASC"; 
 //$execute = array(':pd_id' => $data);

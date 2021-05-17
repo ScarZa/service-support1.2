@@ -2,9 +2,11 @@
 if($_POST['method'] == 'request_room' or $_POST['method'] == 'edit_room' or $_POST['method'] == 'add_conf' or $_POST['method'] == 'edit_conf' or $_POST['method'] == 'notify'){
         include 'option/jquery.php'; 
         include 'connection/connect.php';
+        include 'option/funcDateThai.php'; 
 }else{  @session_start(); 
         include '../option/jquery.php'; 
-        include '../connection/connect.php';?>
+        include '../connection/connect.php';
+        include '../option/funcDateThai.php'; ?>
 
 <?php
 if (empty($_SESSION['ss_id'])) {
@@ -87,7 +89,10 @@ function insert_date($take_date_conv) {
         $empno = $_POST['empno'];    
         }  
         $sql = "SELECT * FROM ss_conferance WHERE room = '".$room."'
-AND ('".$start_date."' between start_date and end_date)
+        AND (('".$start_date."' between start_date and end_date)
+OR ('".$end_date."' between start_date and end_date)
+OR (start_date between '".$start_date."' and '".$end_date."')
+OR (end_date between '".$start_date."' and '".$end_date."'))
 AND (
 
    (start_time BETWEEN '".$start_time."' AND '".$end_time."')
@@ -101,7 +106,7 @@ AND (
         $qry = mysqli_query($db,$sql) or die(mysqli_error($db));
 if($row = mysqli_fetch_array($qry))
 {
-echo "ห้องนี้มีผู้ใช้งาน ช่วงเวลา ". $row['start_time'] ." - ". $row['end_time'] ." กรุณาตรวจสอบอีกครั้ง!";
+echo "ห้องนี้มีผู้ใช้งาน วันที่ ".DateThai2($start_date)." ถึงวันที่ ".DateThai2($end_date)." ในช่วงเวลา ". $row['start_time'] ." - ". $row['end_time'] ." กรุณาตรวจสอบอีกครั้ง!";
  echo "	<br><span class='fa fa-remove'></span>";
         echo "<a href='index.php?page=conferance/request_conf' >กลับ</a>";
 }else{
@@ -169,8 +174,31 @@ $res = notify_message($text,$token['notify_tokenkey']);
                     echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=index.php'>";
 }}
 }else if ($_POST['method'] == 'edit_room') {
+    $sql = "SELECT * FROM ss_conferance WHERE room = '".$room."'
+    AND (('".$start_date."' between start_date and end_date)
+OR ('".$end_date."' between start_date and end_date)
+OR (start_date between '".$start_date."' and '".$end_date."')
+OR (end_date between '".$start_date."' and '".$end_date."'))
+AND (
+
+(start_time BETWEEN '".$start_time."' AND '".$end_time."')
+OR 
+(end_time BETWEEN '".$start_time."' AND '".$end_time."')
+OR 
+('".$start_time."' BETWEEN start_time  AND end_time)
+OR 
+('".$end_time."' BETWEEN  start_time  AND end_time )
+) and approve='Y'";
+        $qry = mysqli_query($db,$sql) or die(mysqli_error($db));
+if($row = mysqli_fetch_array($qry))
+{
+echo "ห้องนี้มีผู้ใช้งาน วันที่ ".DateThai2($start_date)." ถึงวันที่ ".DateThai2($end_date)." ในช่วงเวลา ". $row['start_time'] ." - ". $row['end_time'] ." กรุณาตรวจสอบอีกครั้ง!";
+ echo "	<br><span class='fa fa-remove'></span>";
+        echo "<a href='index.php?page=conferance/request_conf' >กลับ</a>";
+}else{
     $conf_id=$_REQUEST['edit_id'];
-    $edit = mysqli_query($db,"update ss_conferance set obj='$obj', start_date='$start_date', end_date='$end_date',
+    $empno_request= $_POST['empno'];
+    $edit = mysqli_query($db,"update ss_conferance set empno_request='$empno_request', obj='$obj', start_date='$start_date', end_date='$end_date',
                 start_time='$start_time', end_time='$end_time', amount='$amount', equip='$equip', audio='$audio', mic_table='$mic_table',
                    mic_wireless='$mic_wireless', mic_line='$mic_line', visualizer='$visualizer',projector='$projector', comp='$comp', format='$format',
                       room='$room' where conf_id='$conf_id'");
@@ -189,6 +217,7 @@ $res = notify_message($text,$token['notify_tokenkey']);
     } else {
             echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=index.php?page=conferance/pre_request'>";
         }
+    }
 }else if ($_POST['method'] == 'confirm_conf') {
     include '../connection/connect.php';
     
