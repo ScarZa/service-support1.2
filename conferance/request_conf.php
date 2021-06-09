@@ -70,6 +70,23 @@ function nextbox(e, id) {
                 $( "#datepicker" ).datepicker("setDate", new Date('<?=$take_date?>')); //Set ค่าวัน
                 $( "#datepicker1" ).datepicker("setDate", new Date('<?=$take_date1?>')); //Set ค่าวัน
                 $( "#datepicker2" ).datepicker("setDate", new Date('<?=$take_date2?>')); //Set ค่าวัน
+
+                $( "#datepicker2" ).change(function() {
+                            if($( "#datepicker2" ).val()<$( "#datepicker1" ).val()){
+                                alert('เลือกวันที่สิ้นสุดใหม่ด้วยครับ');
+                                $( "#datepicker2" ).datepicker("setDate", new Date('<?=$take_date2?>'));
+                                $( "#datepicker2" ).focus();
+                            }
+                    });
+
+                    $( "#take_hour_begin" ).change(function() {
+                            if($( "#datepicker2" ).val()<$( "#datepicker1" ).val()){
+                                alert('เลือกวันที่สิ้นสุดใหม่ด้วยครับ');
+                                
+                                $( "#datepicker2" ).focus();
+                                $( "#take_hour_begin" ).val('');
+                            }
+                    });
                  });
                 </script>
                     <div align='center'>
@@ -114,7 +131,7 @@ function nextbox(e, id) {
                 <div class="row">  
                 <div class="form-group col-lg-4 col-md-5 col-xs-12">  <label for="take_hour_st">ตั้งแต่&nbsp;</label>  
                 <div class="form-group sm"> 
-                <select name="take_hour_st" id="take_hour" class="form-control select2" required>
+                <select name="take_hour_st" id="take_hour_begin" class="form-control select2" required>
                     <option value="">ชั่วโมง</option>
                     <?php for($i=0;$i<=23;$i++){
                         if((!empty($edit_person['start_time']))and($i== substr($edit_person['start_time'],0,2))){$selected='selected';}else{$selected='';}
