@@ -70,23 +70,6 @@ function nextbox(e, id) {
                 $( "#datepicker" ).datepicker("setDate", new Date('<?=$take_date?>')); //Set ค่าวัน
                 $( "#datepicker1" ).datepicker("setDate", new Date('<?=$take_date1?>')); //Set ค่าวัน
                 $( "#datepicker2" ).datepicker("setDate", new Date('<?=$take_date2?>')); //Set ค่าวัน
-
-                $( "#datepicker2" ).change(function() {
-                            if($( "#datepicker2" ).val()<$( "#datepicker1" ).val()){
-                                alert('เลือกวันที่สิ้นสุดใหม่ด้วยครับ');
-                                $( "#datepicker2" ).datepicker("setDate", new Date('<?=$take_date2?>'));
-                                $( "#datepicker2" ).focus();
-                            }
-                    });
-
-                    $( "#take_hour_begin" ).change(function() {
-                            if($( "#datepicker2" ).val()<$( "#datepicker1" ).val()){
-                                alert('เลือกวันที่สิ้นสุดใหม่ด้วยครับ');
-                                
-                                $( "#datepicker2" ).focus();
-                                $( "#take_hour_begin" ).val('');
-                            }
-                    });
                  });
                 </script>
                     <div align='center'>
@@ -131,7 +114,7 @@ function nextbox(e, id) {
                 <div class="row">  
                 <div class="form-group col-lg-4 col-md-5 col-xs-12">  <label for="take_hour_st">ตั้งแต่&nbsp;</label>  
                 <div class="form-group sm"> 
-                <select name="take_hour_st" id="take_hour_begin" class="form-control select2" required>
+                <select name="take_hour_st" id="take_hour" class="form-control select2" required>
                     <option value="">ชั่วโมง</option>
                     <?php for($i=0;$i<=23;$i++){
                         if((!empty($edit_person['start_time']))and($i== substr($edit_person['start_time'],0,2))){$selected='selected';}else{$selected='';}
@@ -249,19 +232,21 @@ function nextbox(e, id) {
                        
                     </div>
                     <div class="form-group">
-                        <label for="format">รูปแบบการจัโต๊ะห้องประชุม</label>
+                        <label for="format">รูปแบบการจัดห้องประชุม</label>
                         <select name="format" id="format" required  class="form-control"> 
                         <?php if($edit_person['format']=='1'){
-                            $fselect1='selected';$fselect2='';
-                        }elseif ($edit_person['format']=='2') {$fselect1='';$fselect2='selected';}?>    
+                            $fselect1='selected';$fselect2='';$fselect3='';
+                        }elseif ($edit_person['format']=='2') {$fselect1='';$fselect2='selected';$fselect3='';
+                        }elseif ($edit_person['format']=='3') {$fselect1='';$fselect2='';$fselect3='selected';}?>    
                             <option value="1" <?= isset($fselect1)?$fselect1:''?>>ประชุม</option> 
                             <option value="2" <?= isset($fselect2)?$fselect2:''?>>สัมมนา</option>
+                            <option value="3" <?= isset($fselect3)?$fselect3:''?>>video conferance.</option>
 			</select>
                     </div>
                     <div class="form-group">
                         <label for="room">ห้องประชุม</label>
                         <select name="room" id="room" required  class="form-control" onkeydown="return nextbox(event, 'dep');"> 
-				<?php	$sql = mysqli_query($db,"SELECT *  FROM ss_room where status=1 order by room_id");
+				<?php	$sql = mysqli_query($db,"SELECT *  FROM ss_room order by room_id");
 				 echo "<option value=''>--เลือกห้องประชุม--</option>";
 				 while( $result = mysqli_fetch_assoc( $sql ) ){
           if($result['room_id']==$edit_person['room']){$selected='selected';}else{$selected='';}

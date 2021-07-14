@@ -68,7 +68,7 @@ ob_start(); // ทำการเก็บค่า html นะครับ*/
                             }
                             ?>
     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    ลักษณะการจัดโต๊ะประชุม : <b><?= $conf['format']==1?'ประชุม':'สัมมนา'?></b>
+    ลักษณะการจัดโต๊ะประชุม : <b><?= $conf['format']==1?'ประชุม':($conf['format']==2?'สัมมนา':'Video conferance.')?></b>
 </div><br> 
     <div class="col-lg-12">
         <table width="100%" border="1" cellspacing="0" ><tr><td>

@@ -109,7 +109,7 @@ WHERE ssc.conf_id ='$conf_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEn
               </tr>
               <tr>
                 <td align="right"><B>รูปแบบ : </b></td>
-                <td colspan="3">&nbsp;&nbsp; <?php if($detial_l['format']=='1'){echo 'ประชุม';}elseif ($detial_l['format']=='2') {echo 'สัมมนา';}?></td>
+                <td colspan="3">&nbsp;&nbsp; <?php if($detial_l['format']=='1'){echo 'ประชุม';}elseif ($detial_l['format']=='2') {echo 'สัมมนา';}elseif ($detial_l['format']=='3') {echo 'Video conferance.';}?></td>
               </tr>
               <?php
               if($detial_l['equip']=='Y'){

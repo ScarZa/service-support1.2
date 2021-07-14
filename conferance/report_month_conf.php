@@ -109,27 +109,11 @@
 SUM(CASE room
 WHEN '1' THEN 1
 WHEN '2' THEN 0
-WHEN '3' THEN 0
-WHEN '4' THEN 0
 ELSE NULL END) AS bigroom,
 SUM(CASE room
 WHEN '1' THEN 0
 WHEN '2' THEN 1
-WHEN '3' THEN 0
-WHEN '4' THEN 0
 ELSE NULL END) AS smallroom,
-SUM(CASE room
-WHEN '1' THEN 0
-WHEN '2' THEN 0
-WHEN '3' THEN 1
-WHEN '4' THEN 0
-ELSE NULL END) AS comroom,
-SUM(CASE room
-WHEN '1' THEN 0
-WHEN '2' THEN 0
-WHEN '3' THEN 0
-WHEN '4' THEN 1
-ELSE NULL END) AS room5,
 COUNT(room) as totalroom
 FROM ss_conferance
 WHERE (start_date BETWEEN '$take_month1' AND '$take_month2') and approve='Y'
@@ -139,27 +123,11 @@ SELECT 'รวม' as total,
 SUM(CASE room
 WHEN '1' THEN 1
 WHEN '2' THEN 0
-WHEN '3' THEN 0
-WHEN '4' THEN 0
 ELSE NULL END) AS bigroom,
 SUM(CASE room
 WHEN '1' THEN 0
 WHEN '2' THEN 1
-WHEN '3' THEN 0
-WHEN '4' THEN 0
 ELSE NULL END) AS smallroom,
-SUM(CASE room
-WHEN '1' THEN 0
-WHEN '2' THEN 0
-WHEN '3' THEN 1
-WHEN '4' THEN 0
-ELSE NULL END) AS comroom,
-SUM(CASE room
-WHEN '1' THEN 0
-WHEN '2' THEN 0
-WHEN '3' THEN 0
-WHEN '4' THEN 1
-ELSE NULL END) AS room5,
 COUNT(room) as totalroom
 FROM ss_conferance ssc
 WHERE (start_date BETWEEN '$take_month1' AND '$take_month2') and approve='Y' 
@@ -172,17 +140,15 @@ ORDER BY start_date";
                 <table  id="datatable"  align="center" width="100%" class="table table-responsive table-bordered table-hover">
                     <thead>
                     <tr align="center">
-                        <td colspan="6"><h4>รายงานการใช้ห้องประชุม(รายเดือน)</h4></td>
+                        <td colspan="4"><h4>รายงานการใช้ห้องประชุม(รายเดือน)</h4></td>
                     </tr>
                     <tr align="center">
-                        <td colspan="6"><b>ปีงบประมาณ <?= isset($years)?$years:''?>  ประจำเดือน <?= isset($month['month_name'])?$month['month_name']:''?></b></td>
+                        <td colspan="4"><b>ปีงบประมาณ <?= isset($years)?$years:''?>  ประจำเดือน <?= isset($month['month_name'])?$month['month_name']:''?></b></td>
                     </tr>
                     <tr align="center" >
                         <td width="15%" align="center" bgcolor="#898888"><b>วันที่</b></td>
                         <td align="center" bgcolor="#898888"><b>ห้องประชุมกองสุข(ห้องใหญ่)</b></td>
                         <td align="center" bgcolor="#898888"><b>ห้องประชุมอุครานันท์(ห้องเล็ก)</b></td>
-                        <td align="center" bgcolor="#898888"><b>ห้องประชุมสารสนเทศ(com)</b></td>
-                        <td align="center" bgcolor="#898888"><b>ห้องตึก5ชั้น(ชั้น 1)</b></td>
                         <td width="8%" align="center" bgcolor="#898888"><b>รวม</b></td>
                      </tr>
                     </thead>
@@ -199,8 +165,6 @@ ORDER BY start_date";
                             <?php }?>
                             <td align="center"><?= $result['bigroom'] ?></td>
                             <td align="center"><?= $result['smallroom'] ?></td>
-                            <td align="center"><?= $result['comroom'] ?></td>
-                            <td align="center"><?= $result['room5'] ?></td>
                             <td align="center"><?= $result['totalroom'] ?></td>
                         </tr>
                     <?php }}?>
