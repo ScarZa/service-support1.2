@@ -1,5 +1,5 @@
-<?php
-if($_POST['method'] == 'request_room' or $_POST['method'] == 'edit_room' or $_POST['method'] == 'add_conf' or $_POST['method'] == 'edit_conf' or $_POST['method'] == 'notify'){
+<?php 
+if(isset($_POST['method']) == 'request_room' or isset($_POST['method']) == 'edit_room' or isset($_POST['method']) == 'add_conf' or isset($_POST['method']) == 'edit_conf' or isset($_POST['method']) == 'notify'){
         include 'option/jquery.php'; 
         include 'connection/connect.php';
         include 'option/funcDateThai.php'; 

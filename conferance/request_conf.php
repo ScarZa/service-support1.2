@@ -117,8 +117,12 @@ function nextbox(e, id) {
                     </div>
                   <p><?php } ?>
                     <div class="form-group" > 
-                        <label for="obj">เพื่อ &nbsp;</label>
+                        <label for="obj">จุดประสงค์ เพื่อ &nbsp;</label>
                         <input value="<?= isset($edit_person['obj'])?$edit_person['obj']:''?>" NAME="obj" id="obj"  class="form-control" onkeydown="return nextbox(event, 'start_date')" placeholder="วัตถุประสงค์ที่ต้องการใช้ห้องประชุม" size="80" required>
+                        </div>
+                  <div class="form-group" >
+                  <label for="change-obj">&nbsp;</label>
+                        <button class='form-control btn btn-xs btn-warning' id='change-obj'>แก้ไขจุดประสงค์</button>
                     </div><p>
                     <div class="form-group">
                     <label>ในวันที่ &nbsp;</label>
@@ -290,6 +294,37 @@ function nextbox(e, id) {
 </div>
 </form>
     
-    </section><?php $db->close();?>
+    </section>
+    <script type="text/javascript">
+$( "#change-obj" ).click(function(e) {
+    //$("#frmMR").on('submit', (function (e) {
+        e.preventDefault();
+        var dataForm = new FormData();
+        dataForm.append('method', 'changeOBJ');
+        dataForm.append('obj', $("#obj").val());
+        dataForm.append('conf_id', <?=$edit_person['conf_id'];?>);
+        // ตรวจสอบค่าต่างใน <form></form>
+        // for (var value of dataForm.values()) {
+        //     console.log(value);
+        // }
+        var settings = {
+            type: "POST",
+            url: "process/prcroomChangOBJ.php",
+            async: true,
+            crossDomain: true,
+            data: dataForm,
+            contentType: false,
+            cache: false,
+            processData: false
+        }
+        //console.log(settings)
+         $.ajax(settings).done(function (result) { //console.log(result);
+            
+                 alert(result.messege);
+                        
+         })
+    });
+</script>
+    <?php $db->close();?>
 
          
