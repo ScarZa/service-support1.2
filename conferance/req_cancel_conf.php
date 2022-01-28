@@ -31,36 +31,23 @@ if($method!='back'){
         <div class="row">
     <div class="col-lg-12" align="center">
         <div class="panel panel-primary">
-           <?php if($method=='confirm_conf'){?> 
-            <div class="panel-heading" align="center">
-                <h3 class="panel-title"> ยืนยันการอนมัติใช้ห้องสมุด</h3>
-            </div>
-            <div class="panel-body" align='center'>
-                <div class="well well-sm">
-                <b>ยืนยันการอนมัติใช้ห้องประชุม</b>
-                <div class="form-group">
-                    <input type="radio" name="confirm" id="confirm" value="Y" required>&nbsp;&nbsp; อนุมัติ<br> 
-                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="confirm" id="confirm" value="N" required>&nbsp;&nbsp; ไม่อนุมัติ
-                </div>
-                </div>
-                <?php }else{?>
+           
                  <div class="panel-heading" align="center">
-                <h3 class="panel-title"> ใบขอใช้ห้องประชุม</h3>
+                <h3 class="panel-title"> ใบขอยกเลิกการใช้ห้องประชุม</h3>
             </div>
             <div class="panel-body" align='center'>
-                <?php }?>
+                
                                         <?php include_once ('../option/funcDateThai.php');
                                         
                                         $conf_id=$_REQUEST['id'];
                                         
-                            $select_det=  mysqli_query($db,"SELECT ssc . * , CONCAT( p1.pname, e1.firstname,  ' ', e1.lastname ) AS fullname, d1.depName AS dep, e1.empno AS empno, r.room_name,rq.reason
-                            FROM ss_conferance ssc
-                            LEFT OUTER JOIN ss_request_cancel_conf rq on rq.conf_id = ssc.conf_id
-                            INNER JOIN emppersonal e1 ON e1.empno = ssc.empno_request
-                            inner JOIN work_history wh ON wh.empno=e1.empno
-                            INNER JOIN pcode p1 ON e1.pcode = p1.pcode
-                            INNER JOIN department d1 ON wh.depid = d1.depId
-                            INNER JOIN ss_room r ON r.room_id = ssc.room
+                            $select_det=  mysqli_query($db,"SELECT ssc . * , CONCAT( p1.pname, e1.firstname,  ' ', e1.lastname ) AS fullname, d1.depName AS dep, e1.empno AS empno, r.room_name
+FROM ss_conferance ssc
+INNER JOIN emppersonal e1 ON e1.empno = ssc.empno_request
+inner JOIN work_history wh ON wh.empno=e1.empno
+INNER JOIN pcode p1 ON e1.pcode = p1.pcode
+INNER JOIN department d1 ON wh.depid = d1.depId
+INNER JOIN ss_room r ON r.room_id = ssc.room
 WHERE ssc.conf_id ='$conf_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))");
                             $detial_l= mysqli_fetch_assoc($select_det);
                             $idAdmin= isset($detial_l['idAdmin'])?$detial_l['idAdmin']:'';
@@ -130,37 +117,20 @@ WHERE ssc.conf_id ='$conf_id' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEn
                 </td>
               </tr>
               <?php }?>
-              <?php if($method=='cancle_conf'){?>
-                <tr class='alert alert-danger'>
-                <td align="right" valign="top"><b>เหตุผลการยกเลิก : </b></td>
-                <td colspan="3">&nbsp;&nbsp; <?=$detial_l['reason'];?></td>
-              </tr>
-                <?php }?>
                         </thead>
-                        </table><br>
+                        </table>
+                        <div class='alert alert-danger'>
+                        <label for="reason">เหตุผลการยกเลิก</label>
+                        <textarea class="form-control" id="reason" name="reason" placeholder='กรุณาระบุรายละเอียดเหตุผลการขอยกเลิก' require></textarea>
+              </div>
                         <center>
                         <input type="hidden" name="conf_id" value="<?=$conf_id;?>">
-                        
-                        <?php if($method=='confirm_conf'){?> 
-                        <input type="hidden" name="depName" value="<?=$detial_l['dep'];?>">
-                        <input type="hidden" name="event_start" value="<?=$detial_l['start_date']." ".$detial_l['start_time'];?>">
-                        <input type="hidden" name="event_end" value="<?=$detial_l['end_date']." ".$detial_l['end_time'];?>">
-                        <input type="hidden" name="empno" value="<?=$detial_l['empno_request'];?>">
-                        <input type="hidden" name="room" value="<?=$detial_l['room'];?>">    
-                    <input type="hidden" name="method" value="confirm_conf">
-                    <input class="btn btn-success" type="submit" name="submit" value="ยืนยันกระบวนการ">
-                        <?php }elseif($method=='cancle_conf'){?>
-                    <input type="hidden" name="method" value="cancle_conf">    
-                    <input class="btn btn-danger" type="submit" name="submit" value="ยกเลิก">
-                        <?php }?>
+                        <input type="hidden" name="method" value="req_cancle_conf">    
+                        <input class="btn btn-danger" type="submit" name="submit" value="บันทึกคำขอยกเลิก">
+                      
                     </center>
-           </div></div>
-            <?php if($method=='back'){
-                $select_url=  mysqli_query($db,"select url from hospital");
-                    $url=  mysqli_fetch_assoc($select_url);?>
-                <a href="../fullcalendar/fullcalendar1.php"><img src="../images/undo.ico" width="20"  title="ย้อนกลับ"> กลับไปปฏิทิน</a>
-                <?php }?>
-            
+           </div>
+          </div>
         </div>
             </div>
             </div>

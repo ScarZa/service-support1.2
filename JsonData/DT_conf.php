@@ -33,7 +33,7 @@ inner join emppersonal e1 on e1.empno=sscon.empno_request
 inner JOIN work_history wh ON wh.empno=e1.empno
 inner join department d1 on d1.depId=wh.depid
 WHERE (".$seldate." between sscon.start_date and sscon.end_date) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
-and sscon.approve='Y'
+and sscon.approve='Y'  GROUP BY sscon.conf_id
 ORDER BY ssr.room_id ASC,start_time ASC"; 
 //$execute = array(':pd_id' => $data);
     $conn_DB->imp_sql($sql);

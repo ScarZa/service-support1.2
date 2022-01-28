@@ -91,7 +91,7 @@ if($_SESSION['ss_status']=='USER'){
             inner join emppersonal e on e.empno=ssc.empno_request
             inner JOIN work_history wh ON wh.empno=e.empno
             inner join department d on d.depId=wh.depid
-            where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+            where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) GROUP BY ssc.conf_id
             order by ssc.conf_id desc";
     
     $q2="SELECT ssc . * , CONCAT( p1.pname, e.firstname,  ' ', e.lastname ) AS fullname, d1.depName AS dep, e.empno AS empno,
@@ -103,7 +103,7 @@ inner JOIN work_history wh ON wh.empno=e.empno
 inner join department d1 on d1.depId=wh.depid
 INNER JOIN amphur am on am.AMPHUR_ID=ssc.amphur
 INNER JOIN province pv on pv.PROVINCE_ID=ssc.province
-where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w))
+where $code ssc.start_date between '$this_year-10-01' and '$next_year-09-30' and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) GROUP BY ssc.car_id
 order by ssc.car_id desc";
                 $qr = mysqli_query($db,$q);
                 $qr2 = mysqli_query($db,$q2);
@@ -158,6 +158,7 @@ order by ssc.car_id desc";
                         <td width="6%" align="center"><b>จำนวนผู้เข้าร่วม</b></td>
                         <td width="6%" align="center"><b>สถานะ</b></td>
                         <td width="6%" align="center"><b>พิมพ์แบบขออนุญาต</b></td>
+                        <td width="6%" align="center"><b>ขอยกเลิก</b></td>
                     </tr>
                         </thead>
                         <tbody>
@@ -187,6 +188,7 @@ order by ssc.car_id desc";
                                      <?php }?>
                             </td>
                             <td align="center"><a href="#" onClick="window.open('conferance/conf_request_paper.php?conf_id=<?= $result['conf_id']; ?>','','width=700,height=900'); return false;" title="พิมพ์ใบขอรถยนต์"><img src='images/printer.ico' alt="" width='30' /></a></td>
+                            <td align="center"><a href="#" onClick="window.open('conferance/req_cancel_conf.php?id=<?= $result['conf_id']; ?>','','width=550,height=650'); return false;" title="คำขอยกเลิกการใช้งานห้องประชุม"><img src='images/file_delete.ico' alt="" width='30' /></a></td>
                         </tr>
                     <?php $i++;
                 }

@@ -246,10 +246,81 @@ echo "ห้องนี้มีผู้ใช้งาน วันที่ 
         echo "	<span class='glyphicon glyphicon-remove'></span>";
         echo "<a href='index.php?page=conferance/pre_request' >กลับ</a>";
     
-    } }else if ($_POST['method'] == 'cancle_conf') {
+    } 
+}else if ($_POST['method'] == 'req_cancle_conf') {
+    
+    $empno = $_SESSION['ss_id'];
+    $conf_id=$_POST['conf_id'];
+    $reason=$_POST['reason'];
+    $reqdate=date('Y-m-d H:i:s');
+
+    $sql_chk = "SELECT * FROM ss_request_cancel_conf WHERE conf_id =".$conf_id;
+    $qry = mysqli_query($db,$sql_chk) or die(mysqli_error($db));
+    if($row = mysqli_fetch_array($qry))
+    {
+    echo "<script>alert('ใบคำขอนี้ถูกขอยกเลิกไปแล้ว')</script>;";
+     
+    } else {
+
+$request = mysqli_query($db,"insert into ss_request_cancel_conf set conf_id='$conf_id', empno='$empno', reason='$reason', reqdate='$reqdate'");
+
+$last_insert = mysqli_insert_id($db);
+$sql_line = mysqli_query($db,"select ssc.conf_id,ssc.conferance_no,ssc.obj,ssc.start_date,SUBSTR(ssc.start_time,1,5)start_time,ssc.end_date,SUBSTR(ssc.end_time,1,5)end_time,ssc.amount
+, concat(e1.firstname,' ',e1.lastname) as fullname, d1.depName, r.room_name
+,(SELECT concat(e.firstname,' ',e.lastname) FROM emppersonal e INNER JOIN ss_request_cancel_conf rq on rq.empno = e.empno WHERE rq.conf_id = ".$conf_id.") req_name
+        from ss_conferance ssc  
+        INNER JOIN ss_room r on r.room_id=ssc.room
+        inner join emppersonal e1 on e1.empno=ssc.empno_request
+        inner JOIN work_history wh ON wh.empno=e1.empno
+        inner join department d1 on d1.depId=wh.depid
+        where ssc.conf_id=".$conf_id." and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by ssc.conf_id");
+$LineText = mysqli_fetch_assoc($sql_line);
+include_once '../option/funcDateThai.php';
+    //////////////////// Line Notify //////////////////////////////
+define('LINE_API',"https://notify-api.line.me/api/notify");
+function notify_message($message,$token){
+$queryData = array('message' => $message);
+$queryData = http_build_query($queryData,'','&');
+$headerOptions = array( 
+     'http'=>array(
+        'method'=>'POST',
+        'header'=> "Content-Type: application/x-www-form-urlencoded\r\n"
+                  ."Authorization: Bearer ".$token."\r\n"
+                  ."Content-Length: ".strlen($queryData)."\r\n",
+        'content' => $queryData
+     ),
+);
+$context = stream_context_create($headerOptions);
+$result = file_get_contents(LINE_API,FALSE,$context);
+$res = json_decode($result);
+return $res;
+}
+$sql = mysqli_query($db,"SELECT notify_tokenkey FROM notify WHERE notify_id=3");
+$token = mysqli_fetch_assoc($sql);
+$text = "\nแจ้งขอยกเลิกห้องประชุม : \nวันที่".DateThai1($LineText['start_date'])." ".$LineText['start_time']."น.\nถึงวันที่".DateThai1($LineText['end_date'])." ".$LineText['end_time']."น.\n".$LineText['room_name']."\nงาน ".$LineText['depName']."\nผู้ยื่นคำขอยกเลิก :\n".$LineText['req_name'];
+
+$res = notify_message($text,$token['notify_tokenkey']);
+//print_r($res);
+
+/////////////////////
+
+if ($request == false) {
+    echo "<p>";
+    echo "Insert not complete" . mysqli_error($db);
+    echo "<br />";
+    echo "<br />";
+
+    echo "	<span class='glyphicon glyphicon-remove'></span>";
+    echo "<a href='index.php?page=conferance/request_conf' >กลับ</a>";
+} else {
+                //echo" <META HTTP-EQUIV='Refresh' CONTENT='2;URL=index.php?page=user/pre_order'>";
+}}
+}else if ($_POST['method'] == 'cancle_conf') {
     include '../connection/connect.php';
     $conf_id=$_POST['conf_id'];
+    $candate=date('Y-m-d H:i:s');
     $cancle_conf=  mysqli_query($db, "update ss_conferance set approve='C', approver='".$_SESSION['ss_id']."' where conf_id='$conf_id' ");
+    $cancle_conf=  mysqli_query($db, "update ss_request_cancel_conf set req_status='Y', canceler='".$_SESSION['ss_id']."',candate = '$candate' where conf_id='$conf_id' ");
     $delete_conf=  mysqli_query($db,"delete from tbl_event where workid='$conf_id' and process='2'");
     
                     if ($cancle_conf == false) {

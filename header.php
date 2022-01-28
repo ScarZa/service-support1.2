@@ -195,6 +195,7 @@ $_SESSION['ss_status'] = isset($_SESSION['ss_status']) ? $_SESSION['ss_status'] 
 
                                         <li><a href="index.php?page=conferance/pre_request"><img src='images/Lfolder.ico' width='25'> บันทึกขอใช้ห้องประชุม</a></li>
                                         <li><a href="index.php?page=conferance/pre_confirm"><img src='images/Lfolder.ico' width='25'> บันทึกอนุมัติใช้ห้องประชุม</a></li>
+                                        <li><a href="index.php?page=conferance/pre_req_cancel"><img src='images/Lfolder.ico' width='25'> บันทึกยกเลิกห้องประชุม</a></li>
                                         <li><a href="index.php?page=conferance/pre_cancle"><img src='images/Lfolder.ico' width='25'> บันทึกไม่อนุมัติ/ยกเลิกห้องประชุม</a></li>
                                         <li class="divider"></li>
                                         <li><a href="index.php?page=conferance/report_month_conf"><img src='images/if_Report_669954.ico' width='25'> รายงานห้องประชุม(รายเดือน)</a></li>

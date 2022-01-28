@@ -1,10 +1,10 @@
 <?php  include 'connection/connect.php'; ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1><font color='blue'>  บันทึกการอนุมัติใช้ห้องประชุม </font></h1> 
+        <h1><font color='blue'>  บันทึกการยกเลิกห้องประชุม </font></h1> 
         <ol class="breadcrumb alert-warning">
             <li><a href="index.php"><i class="fa fa-home"></i> หน้าหลัก</a></li>
-            <li class="active"><i class="fa fa-edit"></i> บันทึกการอนุมัติใช้ห้องประชุม</li>
+            <li class="active"><i class="fa fa-edit"></i> บันทึกการยกเลิกห้องประชุม</li>
         </ol>
     </div>
 </div>
@@ -12,7 +12,7 @@
     <div class="col-lg-12">
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h3 class="panel-title"><font color='brown'>ตารางบันทึกการอนุมัติใช้ห้องประชุม</font></h3>
+                <h3 class="panel-title"><font color='brown'>ตารางบันทึกการขอยกเลิกการใช้งานห้องประชุม</font></h3>
             </div>
             <div class="panel-body">
                 <form method="post" action="" enctype="multipart/form-data" class="navbar-form navbar-right">
@@ -147,13 +147,15 @@ if (!empty($_REQUEST['year'])) {
                                 }
              $code_where="'$this_year-10-01' and '$next_year-09-30'";                   
 }
-    $q="select r.room_name, d.depName, ssc.start_date, ssc.end_date, ssc.start_time, ssc.end_time, ssc.amount, ssc.conf_id, ssc.conferance_no
-            from ss_conferance ssc
-            inner join ss_room r on r.room_id=ssc.room
-            inner join emppersonal e on e.empno=ssc.empno_request
-            inner JOIN work_history wh ON wh.empno=e.empno
-            INNER JOIN department d ON d.depId = wh.depid
-            WHERE approve='Y' and start_date between $code_where and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by ssc.conf_id
+    $q="select r.room_name, d.depName, ssc.start_date, ssc.end_date, ssc.start_time, ssc.end_time, ssc.conf_id, ssc.conferance_no
+    ,concat(e.firstname,' ',e.lastname) as reqname
+                from ss_conferance ssc
+                inner join ss_request_cancel_conf rq on rq.conf_id = ssc.conf_id
+                inner join ss_room r on r.room_id=ssc.room
+                inner join emppersonal e on e.empno=rq.empno
+                inner JOIN work_history wh ON wh.empno=e.empno
+                INNER JOIN department d ON d.depId = wh.depid
+                WHERE rq.req_status='N' and start_date between $code_where and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by ssc.conf_id
             order by ssc.conf_id desc";
     $qr=mysqli_query($db,$q);
 if($qr==''){exit();}
@@ -192,12 +194,11 @@ echo mysqli_error($db);
                         <td width="8%" align="center"><b>เลขใบคำขอ</b></td>
                         <td width="15%" align="center"><b>ห้องประชุม</b></td>
                         <td width="19%" align="center"><b>หน่วยงาน</b></td>
-                        <td width="20%" align="center"><b>จากวันที่</b></td>
-                        <td width="15%" align="center"><b>เวลา</b></td>
-                        <td width="6%" align="center"><b>จำนวนผู้เข้าร่วม</b></td>
+                        <td width="17%" align="center"><b>จากวันที่</b></td>
+                        <td width="12%" align="center"><b>เวลา</b></td>
+                        <td width="15%" align="center"><b>ผู้ขอยกเลิก</b></td>
                         <?php if($_SESSION['ss_status']=='ADMIN' or $_SESSION['ss_status']=='SUSER'){?>
-                        <!-- <td width="6%" align="center"><b>ยกเลิก</b></td> -->
-                        <td width="6%" align="center"><b>แก้ไข</b></td>
+                        <td width="6%" align="center"><b>ยกเลิก</b></td>
                         <?php }?>
                     </tr>
                         </thead>
@@ -215,10 +216,9 @@ echo mysqli_error($db);
                             <td align="center"><a href="#" onclick="return popup('conferance/confirm_conf.php?id=<?= $result['conf_id']; ?>',popup,490,450);"><?= $result['depName']; ?></a></td>
                             <td align="center"><?= DateThai1($result['start_date']);?> <b>ถึง</b> <?= DateThai1($result['end_date']);?></td>
                             <td align="center"><?= $result['start_time']; ?> <b>ถึง</b> <?= $result['end_time']; ?></td>
-                            <td align="center"><?= $result['amount']; ?></td>
+                            <td align="center"><?= $result['reqname']; ?></td>
                             <?php if($_SESSION['ss_status']=='ADMIN' or $_SESSION['ss_status']=='SUSER'){?>
-                            <!-- <td align="center"><a href="#" onclick="return popup('conferance/confirm_conf.php?id=<?= $result['conf_id']; ?>&method=cancle_conf',popup,550,450);"><img src='images/file_delete.ico' width='30'></a></td> -->
-                            <td align="center"><a href="index.php?page=conferance/request_conf&method=edit&id=<?=$result['conf_id'];?>"><img src='images/file_edit.ico' width='30'></a></td>
+                            <td align="center"><a href="#" onclick="return popup('conferance/confirm_conf.php?id=<?= $result['conf_id']; ?>&method=cancle_conf',popup,550,450);"><img src='images/file_delete.ico' width='30'></a></td>
                             <?php }?>
                             
                         </tr>

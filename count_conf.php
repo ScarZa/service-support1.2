@@ -17,7 +17,7 @@ $sql = mysqli_query($db,"select count(conf_id) AS countconf from ss_conferance W
                                                                         inner JOIN work_history wh ON wh.empno=e.empno
                                                                         INNER JOIN department d ON d.depId = wh.depid
                                                                         INNER JOIN ss_room r ON r.room_id = ssc.room
-                                                                        WHERE ISNULL( approve ) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) 
+                                                                        WHERE ISNULL( approve ) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by ssc.conf_id
                                                                         ORDER BY ssc.conf_id desc");
                                             while ($result2 = mysqli_fetch_assoc($sql2)) {
                                                 ?>
@@ -53,7 +53,7 @@ $sql = mysqli_query($db,"select count(car_id) AS countcar from ss_car WHERE isnu
                                                                         INNER JOIN emppersonal e ON e.empno = ssc.empno_request
                                                                         inner JOIN work_history wh ON wh.empno=e.empno
                                                                         INNER JOIN department d ON d.depId = wh.depid
-                                                                        WHERE ISNULL( payer ) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) 
+                                                                        WHERE ISNULL( payer ) and (wh.dateEnd_w='0000-00-00' or ISNULL(wh.dateEnd_w)) group by ssc.car_id
                                                                         ORDER BY ssc.car_id desc");
                                             while ($result2 = mysqli_fetch_assoc($sql2)) {
                                                 ?>
